@@ -1,1 +1,5 @@
-# Hello VuePress
+# My Snippets
+
+```php
+	echo "Hello World";
+```
