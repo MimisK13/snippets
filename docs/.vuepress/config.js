@@ -26,41 +26,38 @@ module.exports = {
 				]
 			},
 			{
-				title: 'PHP',
-				path: '/php/',
+				title: 'Laravel',
+				//path: '/php/laravel/',
 				collapsable: true,
-				//sidebarDepth: -1,
-				sidebarDepth: 2,
 				children: [
-					'',
-					'pdo',
+					{
+						title: 'Model',
+						path: '/php/laravel/model.md',
+					},
+					{
+						title: 'Migrations',
+						path: '/php/laravel/migrations.md',
+					},
+					{
+						title: 'Controller',
+						path: '/php/laravel/controller.md',						
+					},
+					{
+						title: 'Routes',
+						path: '/php/laravel/routes.md',						
+					},
+					{
+						title: 'Observer',
+						path: '/php/laravel/observer.md',						
+					},
+					{
+						title: 'Packages',
+						path: '/php/laravel/packages.md',						
+					}						
+					
 				]
 			}
 		]
-
-
-			// 'Home': '/' ,
-			// '/php/': getPHPSiderbar( 'PHP')
-
-
-
-			// '/php/': [
-			// 	'',     /* /foo/ */
-			// 	'pdo',  /* /foo/one.html */
-			// ],
-			//
-			// '/JavaScript/': [
-			// 	'',      /* /bar/ */
-			// ],
-
-			//// fallback
-			// '/': [
-			// 	'',
-			// 	'/php/',
-			// 	//'contact',
-			// 	//'about'
-			// ]
-
 	},
   
 	plugins: [
@@ -81,18 +78,3 @@ module.exports = {
 		]
 	]
 }
-
-/*
-function getPHPSiderbar (groupA, groupB) {
-	return [
-		{
-			title: groupA,
-			collapsable: true,
-			sidebarDepth: -1,
-			children: [
-				'pdo',
-			]
-		}
-	]
-}
- */
