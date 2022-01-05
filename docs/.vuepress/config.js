@@ -1,9 +1,9 @@
 module.exports = {
-	title: 'Mimis K',
-	description: 'Just playing around',
+	title: 'Snippets',
+	description: 'CheatSheet',
 	base: '/snippets/',
 	themeConfig: {
-		repo: 'MimisK13/snippets',
+		//repo: 'MimisK13/snippets',
 		editLinks: false,
 		docsDir: '',
 		editLinkText: 'Edit this page on GitHub',
@@ -11,23 +11,30 @@ module.exports = {
 		displayAllHeaders: true,
 		nav: [
 			{ text: 'Home', link: '/' },
-			{ text: 'Guide', link: '/guide/' },
-			// { text: 'External', link: 'https://google.com' }
+			//{ text: 'Guide', link: '/guide/' }			
 		],
-		sidebar:
-		[
+		sidebar: [
+			// {
+				// title: 'Home',
+				// path: '/',
+				// collapsable: true,
+				// sidebarDepth: -1,
+				// children: [
+					// ''
+				// ]
+			// },
 			{
-				title: 'Home',
-				path: '/',
+				title: 'PHP',				
 				collapsable: true,
-				sidebarDepth: -1,
 				children: [
-					''
+					{
+						title: 'PDO',
+						path: '/php/pdo.md',
+					},
 				]
 			},
 			{
-				title: 'Laravel',
-				//path: '/php/laravel/',
+				title: 'Laravel',				
 				collapsable: true,
 				children: [
 					{
@@ -56,10 +63,19 @@ module.exports = {
 					}						
 					
 				]
+			},
+			{
+				title: 'JavaScript',				
+				collapsable: true,
+				children: [
+					{
+						title: 'Model',
+						path: '/javascript/',
+					},
+				]
 			}
 		]
-	},
-  
+	},  
 	plugins: [
 		['@vuepress/back-to-top', true],
 		[
