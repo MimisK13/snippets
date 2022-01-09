@@ -8,7 +8,7 @@ module.exports = {
 		docsDir: '',
 		editLinkText: 'Edit this page on GitHub',
 		lastUpdated: 'Last Updated',
-		displayAllHeaders: true,
+		displayAllHeaders: false,
 		nav: [
 			{ text: 'Home', link: '/' },
 			//{ text: 'Guide', link: '/guide/' }			
@@ -38,16 +38,32 @@ module.exports = {
 				collapsable: true,
 				children: [
 					{
+						title: 'Installation',
+						path: '/php/laravel/installation.md',
+					},
+					{
 						title: 'Model',
 						path: '/php/laravel/model.md',
+					},
+					{
+						title: 'Queries',
+						path: '/php/laravel/queries.md',
 					},
 					{
 						title: 'Migrations',
 						path: '/php/laravel/migrations.md',
 					},
 					{
+						title: 'Seeders',
+						path: '/php/laravel/seeders.md',
+					},					
+					{
 						title: 'Controller',
 						path: '/php/laravel/controller.md',						
+					},
+					{
+						title: 'Validation',
+						path: '/php/laravel/validation.md',						
 					},
 					{
 						title: 'Routes',
@@ -60,8 +76,7 @@ module.exports = {
 					{
 						title: 'Packages',
 						path: '/php/laravel/packages.md',						
-					}						
-					
+					}
 				]
 			},
 			{

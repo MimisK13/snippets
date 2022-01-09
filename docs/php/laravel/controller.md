@@ -33,10 +33,11 @@ public function create()
 
 ### Store
 
+With validation logic
+
 ```php
 public function store(Request $request)
 {
-	// TODO: Form Request
 	$validated = $request->validate([
 		'name' => ['required', 'unique:products', 'max:255'],
 		'slug' => ['required'],
@@ -46,7 +47,47 @@ public function store(Request $request)
 
 	return redirect()
 		->route('product.create')
-		->with('status', 'Product added!');
+		->with('status', 'Product successfully added!');
+}
+```
+
+Refactor: Validation with StoreRequest
+
+```php
+public function store(StoreProductRequest $request)
+{
+	Product::create($request->validated());
+
+	return redirect()
+		->route('product.create')
+		->with('status', 'Product successfully added!');
+}
+```
+
+- ProductStoreRequest
+
+```php
+/**
+ * Determine if the user is authorized to make this request.
+ *
+ * @return bool
+ */
+public function authorize()
+{
+	return true;
+}
+
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array
+ */
+public function rules()
+{
+	return [
+		'name' => ['required', 'unique:manufacturers', 'max:255'],
+		'url' => ['url'],		
+	];
 }
 ```
 
@@ -56,7 +97,9 @@ public function store(Request $request)
 public function show(Product $product)
 {
 	return view('product.show', [
-		'product' => Product::find($product)
+		'product' => Product::findOrFail($product->id)
+		// or
+		'product' => $product
 	]);
 }
 ```
@@ -67,8 +110,8 @@ public function show(Product $product)
 public function edit(Product $product)
 {
 	return view('product.edit', [
-		'product' => Product::find($product)
-	]);	
+		'product' => $product
+	]);
 }
 ```
 
@@ -92,7 +135,39 @@ public function destroy(Product $product)
 {
 	$product->delete();
 	
-	return back()
-		->with('success', 'Product deleted successfully');
+	return redirect()
+		->route('products.index')
+		->with('status', 'Product successfully deleted!');
+}
+```
+
+## Middleware
+
+```php
+public function __construct()
+{
+	$this->middleware('auth');
+}
+```
+
+```php
+public function __construct()
+{
+	$this->middleware('auth')
+		->only([
+			'create',
+			'destroy'
+		]);
+}
+```
+
+```php
+public function __construct()
+{
+	$this->middleware('auth')
+		->except([
+			'index',
+			'show'
+		]);
 }
 ```

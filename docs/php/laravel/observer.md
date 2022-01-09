@@ -9,7 +9,7 @@
 
 ### Create Observer
 
-```ssh
+```bash
 php artisan make:observer ProductObserver --model=Product
 ```
 
@@ -43,6 +43,17 @@ use App\Models\Product;
 
 class ProductObserver
 {
+    /**
+     * Handle the Product "show" event.
+     *
+     * @param  \App\Models\Product  $Product
+     * @return void
+     */
+    public function retrieved(Product $product)
+    {
+        $product->increment('views');
+    }
+
     /**
      * Handle the Product "created" event.
      *
