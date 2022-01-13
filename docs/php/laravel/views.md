@@ -1,0 +1,10 @@
+# Views
+
+[[TOC]]
+
+## Paginate
+
+```php
+
+
+```

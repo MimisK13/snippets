@@ -74,6 +74,10 @@ module.exports = {
 						path: '/php/laravel/observer.md',						
 					},
 					{
+						title: 'Views',
+						path: '/php/laravel/views.md',						
+					},
+					{
 						title: 'Packages',
 						path: '/php/laravel/packages.md',						
 					}

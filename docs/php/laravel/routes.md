@@ -3,6 +3,10 @@
 [[TOC]]
 
 ```php
+Route::resource('products', Product::class);
+```
+
+```php
 Route::get('/products', [ProductController::class, 'index'])
 	->name('product.index');
 
