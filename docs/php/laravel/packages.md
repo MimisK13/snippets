@@ -4,6 +4,7 @@
 
 ## Development
 - [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
+- [Clockwork](https://github.com/itsgoingd/clockwork)
 - [Livewire](https://laravel-livewire.com/)
 
 ## Authentication
