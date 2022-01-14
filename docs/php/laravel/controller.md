@@ -120,7 +120,19 @@ public function edit(Product $product)
 ```php
 public function update(Request $request, Product $product)
 {
-	
+	$request->validate([
+		'name' => [
+			'required',
+			'max:255',
+			Rule::unique('products')->ignore($product->id)
+		],
+		'serial_number' => [
+			'required',
+			Rule::unique('products')->ignore($product->id),
+		]
+	]);
+
+	$product->update($request->all());	
 	
 	return redirect()
 		->route('products.index')
