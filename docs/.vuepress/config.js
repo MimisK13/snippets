@@ -88,12 +88,32 @@ module.exports = {
 				]
 			},
 			{
+				title: 'Livewire',
+				collapsable: true,
+				children: [
+					{
+						title: 'Installation',
+						path: '/livewire/installation.md',
+					},
+				]
+			},
+			{
 				title: 'Other',
 				collapsable: true,
 				children: [
 					{
 						title: 'Static Site Generators',
 						path: '/other/static-site-generators.md',
+					},
+				]
+			},
+			{
+				title: 'Javascript',
+				collapsable: true,
+				children: [
+					{
+						title: 'Modules',
+						path: '/javascript/modules.md',
 					},
 				]
 			},
