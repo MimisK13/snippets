@@ -29,7 +29,11 @@ module.exports = {
 				children: [
 					{
 						title: 'PDO',
-						path: '/php/pdo.md',
+						path: '/php/classes/pdo.md',
+					},
+					{
+						title: 'Pagination',
+						path: '/php/classes/pagination.md',
 					},
 				]
 			},
@@ -84,15 +88,15 @@ module.exports = {
 				]
 			},
 			{
-				title: 'JavaScript',				
+				title: 'Other',
 				collapsable: true,
 				children: [
 					{
-						title: 'Model',
-						path: '/javascript/',
+						title: 'Static Site Generators',
+						path: '/other/static-site-generators.md',
 					},
 				]
-			}
+			},
 		]
 	},  
 	plugins: [
