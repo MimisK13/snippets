@@ -41,4 +41,7 @@ php artisan migrate
 - [Laravel Media Library](https://github.com/spatie/laravel-medialibrary)
 
 ## Others
-- [Eloquent-Sluggable](https://github.com/cviebrock/eloquent-sluggable)
+
+- [cviebrock/eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable) 
+
+- [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)

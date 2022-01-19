@@ -10,8 +10,8 @@
   "author": "MimisK",
   "license": "ISC",
   "devDependencies": {
-    "@vuepress/plugin-back-to-top": "^1.9.5",
-    "@vuepress/plugin-search": "^1.9.5",
-    "vuepress": "^1.9.5"
+    "@vuepress/plugin-back-to-top": "^1.9.7",
+    "@vuepress/plugin-search": "^1.9.7",
+    "vuepress": "^1.9.7"
   }
 }
