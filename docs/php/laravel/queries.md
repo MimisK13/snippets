@@ -156,3 +156,11 @@ class UserController extends Controller
     }
 }
 ```
+
+## Sum Subscription by Current year
+
+```php
+$subscriptions = Subscription::select('year', 'amount')
+	->whereYear('year', Carbon::now()->year)
+	->sum('amount');
+```

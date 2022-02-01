@@ -58,6 +58,10 @@ module.exports = {
 						path: '/php/laravel/migrations.md',
 					},
 					{
+						title: 'Factories',
+						path: '/php/laravel/factories.md',
+					},					
+					{
 						title: 'Seeders',
 						path: '/php/laravel/seeders.md',
 					},					
@@ -80,6 +84,10 @@ module.exports = {
 					{
 						title: 'Views',
 						path: '/php/laravel/views.md',						
+					},
+					{
+						title: 'Testing',
+						path: '/php/laravel/testing.md',						
 					},
 					{
 						title: 'Packages',
