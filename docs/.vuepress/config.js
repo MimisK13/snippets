@@ -50,6 +50,10 @@ module.exports = {
 						path: '/php/laravel/model.md',
 					},
 					{
+						title: 'Scopes',
+						path: '/php/laravel/scopes.md',
+					},					
+					{
 						title: 'Queries',
 						path: '/php/laravel/queries.md',
 					},
