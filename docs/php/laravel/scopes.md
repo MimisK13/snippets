@@ -28,3 +28,9 @@
         return $query->whereYear('created_at', Carbon::now()->format('Y'));
     }
 ```
+
+### Usage
+
+```php
+	$posts = Post::published()->deleted()->get();
+```
