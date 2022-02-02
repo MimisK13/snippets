@@ -1,4 +1,5 @@
 
+[[TOC]]
 
 ## Examples
 
@@ -32,5 +33,5 @@
 ### Usage
 
 ```php
-	$posts = Post::published()->deleted()->get();
+$posts = Post::published()->deleted()->get();
 ```
