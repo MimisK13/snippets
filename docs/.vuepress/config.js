@@ -129,6 +129,56 @@ module.exports = {
 					},
 				]
 			},
+			{
+				title: 'HTML',
+				collapsable: true,
+				children: [
+					{
+						title: 'Bootstrap',
+						path: '/html/bootstrap/',
+						children: [
+							{
+								title: 'Forms',		
+								path: '/html/bootstrap/forms/',								
+								children: [
+									{
+										title: 'Form Control',
+										path: '/html/bootstrap/forms/form-control.md',
+									},
+									{
+										title: 'Select',
+										path: '/html/bootstrap/forms/select.md',
+									},	
+									{
+										title: 'Checks & Radios',
+										path: '/html/bootstrap/forms/checks-radios.md',
+									},									
+									{
+										title: 'Floating labels',
+										path: '/html/bootstrap/forms/floating-labels.md',
+									},									
+									{
+										title: 'Layout',
+										path: '/html/bootstrap/forms/layout.md',										
+									},
+									{
+										title: 'Validation',
+										path: '/html/bootstrap/forms/validation.md',										
+									}									
+								]
+							},
+							{
+								title: 'Tables',
+								path: '/html/bootstrap/tables.md',
+							},
+							{
+								title: 'Cards',
+								path: '/html/bootstrap/cards.md',
+							},							
+						]
+					},
+				]
+			},			
 		]
 	},  
 	plugins: [
