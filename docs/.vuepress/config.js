@@ -175,7 +175,17 @@ module.exports = {
 								title: 'Cards',
 								path: '/html/bootstrap/cards.md',
 							},							
-						]
+						],											
+					},
+					{
+						title: 'Tailwind',
+						path: '/html/tailwind/',						
+						children: [
+							{
+								title: 'Directives',
+								path: '/html/tailwind/directives.md',								
+							}
+						]							
 					},
 				]
 			},			
