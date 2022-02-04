@@ -183,7 +183,17 @@ module.exports = {
 							{
 								title: 'Directives',
 								path: '/html/tailwind/directives.md',								
-							}
+							},
+							{
+								title: 'Customization',
+								path: '/html/tailwind/customization/',
+								children: [
+									{
+										title: 'Presets',
+										path: '/html/tailwind/customization/presets.md',
+									}
+								]
+							},
 						]							
 					},
 				]
