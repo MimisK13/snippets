@@ -189,14 +189,7 @@ module.exports = {
 				]
 			},			
 		]
-	},
-	// configureWebpack: {
-		// resolve: {
-			// alias: {
-				// '@images': 'assets/images'
-			// }
-		// }
-	// },	
+	},	
 	plugins: [
 		['@vuepress/back-to-top', true],
 		[
