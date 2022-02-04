@@ -1,5 +1,5 @@
 
-![TDD Loop](/tdd_loop.png)
+![TDD Loop](./images/tdd_loop.png)
 
 [Adam Wathan – Laracon US 2016](https://www.youtube.com/watch?v=MdApmmK71WM)
 
