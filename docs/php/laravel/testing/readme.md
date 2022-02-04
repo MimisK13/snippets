@@ -1,5 +1,7 @@
 # Testing
 
+![TDD Loop](/TDD_loop.png)
+
 [[TOC]]
 
 ## Create Test
