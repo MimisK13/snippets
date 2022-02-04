@@ -1,5 +1,5 @@
 module.exports = {
-	title: 'Snippets',
+	title: 'Mimis K',
 	description: 'CheatSheet',
 	base: '/snippets/',
 	themeConfig: {
@@ -16,7 +16,7 @@ module.exports = {
 		sidebar: [			
 			{
 				title: 'PHP',				
-				collapsable: true,
+				initialOpenGroupIndex: -1,
 				children: [
 					{
 						title: 'PDO',
