@@ -1,13 +1,15 @@
-# Installation
+# Laravel
 
 [[TOC]]
 
-## Via Composer
+## Installation
+
+### Via Composer
 ```bash
 composer create-project laravel/laravel example-app
 ```
 
-## Via Laravel Installer
+### Via Laravel Installer
 
 ```bash
 composer global require laravel/installer

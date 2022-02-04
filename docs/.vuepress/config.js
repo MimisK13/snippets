@@ -13,16 +13,7 @@ module.exports = {
 			{ text: 'Home', link: '/' },
 			//{ text: 'Guide', link: '/guide/' }			
 		],
-		sidebar: [
-			// {
-				// title: 'Home',
-				// path: '/',
-				// collapsable: true,
-				// sidebarDepth: -1,
-				// children: [
-					// ''
-				// ]
-			// },
+		sidebar: [			
 			{
 				title: 'PHP',				
 				collapsable: true,
@@ -38,36 +29,43 @@ module.exports = {
 				]
 			},
 			{
-				title: 'Laravel',				
-				collapsable: true,
+				title: 'Laravel',	
+				path: '/php/laravel/',				
+				initialOpenGroupIndex: -1,
 				children: [
 					{
-						title: 'Installation',
-						path: '/php/laravel/installation.md',
-					},
-					{
-						title: 'Model',
-						path: '/php/laravel/model.md',
-					},
-					{
-						title: 'Scopes',
-						path: '/php/laravel/scopes.md',
-					},					
-					{
-						title: 'Queries',
-						path: '/php/laravel/queries.md',
-					},
-					{
-						title: 'Migrations',
-						path: '/php/laravel/migrations.md',
-					},
-					{
-						title: 'Factories',
-						path: '/php/laravel/factories.md',
-					},					
-					{
-						title: 'Seeders',
-						path: '/php/laravel/seeders.md',
+						title: 'Database',
+						path: '/php/laravel/database/',						
+						children : [
+							{
+								title: 'Model',
+								path: '/php/laravel/database/model.md',
+							},
+							{
+								title: 'Scopes',
+								path: '/php/laravel/database/scopes.md',
+							},					
+							{
+								title: 'Queries',
+								path: '/php/laravel/database/queries.md',
+							},
+							{
+								title: 'Migrations',
+								path: '/php/laravel/database/migrations.md',
+							},
+							{
+								title: 'Factories',
+								path: '/php/laravel/database/factories.md',
+							},					
+							{
+								title: 'Seeders',
+								path: '/php/laravel/database/seeders.md',
+							},		
+							{
+								title: 'Observer',
+								path: '/php/laravel/database/observer.md',						
+							},							
+						],
 					},					
 					{
 						title: 'Controller',
@@ -82,16 +80,17 @@ module.exports = {
 						path: '/php/laravel/routes.md',						
 					},
 					{
-						title: 'Observer',
-						path: '/php/laravel/observer.md',						
-					},
-					{
 						title: 'Views',
 						path: '/php/laravel/views.md',						
 					},
 					{
 						title: 'Testing',
-						path: '/php/laravel/testing.md',						
+						path: '/php/laravel/testing/',						
+						children : [
+							{
+						
+							},
+						]
 					},
 					{
 						title: 'Packages',
@@ -131,7 +130,7 @@ module.exports = {
 			},
 			{
 				title: 'HTML',
-				collapsable: true,
+				initialOpenGroupIndex: -1,
 				children: [
 					{
 						title: 'Bootstrap',
