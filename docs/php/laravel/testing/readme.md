@@ -1,6 +1,9 @@
-# Testing
 
 ![TDD Loop](/TDD_loop.png)
+
+[Adam Wathan – Laracon US 2016](https://www.youtube.com/watch?v=MdApmmK71WM)
+
+# Testing
 
 [[TOC]]
 
