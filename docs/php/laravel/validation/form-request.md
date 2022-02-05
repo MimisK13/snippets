@@ -1,4 +1,4 @@
-# Validation
+# Form Request Validation
 
 [[TOC]]
 
@@ -7,16 +7,16 @@
 php artisan make:request StoreProductRequest
 ```
 
-Old - Without Store Request
 ```php
+// Controller
+
+// Without Form Request
 public function store(Request $request)
 {
-	
+	// Validation code...
 }
-```
 
-New - With Store Request
-```php
+// With Form Request
 public function store(StoreProductRequest $request)
 {
 	Product::create($request->validated());	
@@ -92,5 +92,25 @@ class UpdateUserRequest extends FormRequest
             ],
         ];
     }
+}
+```
+
+## Preparing Input For Validation
+
+```php
+use Illuminate\Support\Str;
+
+/**
+ * Prepare the data for validation.
+ *
+ * @return void
+ */
+protected function prepareForValidation()
+{
+    $this->merge([
+		'slug' => Str::slug($this->title),
+		'published' => $this->published == 'on' ?? true,
+		'user_id' => Auth::id()
+    ]);
 }
 ```

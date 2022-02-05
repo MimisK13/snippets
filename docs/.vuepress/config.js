@@ -73,7 +73,17 @@ module.exports = {
 					},
 					{
 						title: 'Validation',
-						path: '/php/laravel/validation.md',						
+						path: '/php/laravel/validation/',
+						children : [
+							{
+								title: 'Form Request',
+								path: '/php/laravel/validation/form-request.md',								
+							},
+							{
+								title: 'Validation Rules',
+								path: '/php/laravel/validation/validation-rules.md',
+							},							
+						],						
 					},
 					{
 						title: 'Routes',
