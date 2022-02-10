@@ -98,7 +98,8 @@ module.exports = {
 						path: '/php/laravel/testing/',						
 						children : [
 							{
-						
+								title: 'Controller Methods',
+								path: '/php/laravel/testing/controller-methods.md',						
 							},
 						]
 					},
