@@ -136,6 +136,14 @@ module.exports = {
 					{
 						title: 'Modules',
 						path: '/javascript/modules.md',
+						title: 'AlpineJs',	
+						path: '/javascript/alpinejs/',					
+						children: [
+							{
+								title: 'Textarea',
+								path: '/javascript/alpinejs/textarea.md',
+							},
+						]
 					},
 				]
 			},
