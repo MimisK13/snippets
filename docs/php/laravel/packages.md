@@ -44,6 +44,7 @@ php artisan migrate
 - [cviebrock/eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable) 
 - [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)
 - [SpartnerNL/Laravel-Excel](https://github.com/SpartnerNL/Laravel-Excel)
+- [spatie/laravel-collection-macros](https://github.com/spatie/laravel-collection-macros)
 
 # Links
 - [drawSQL](https://drawsql.app/)
