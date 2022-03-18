@@ -4,6 +4,7 @@
 
 ## Development
 - [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
+- [Laravel N+1 Query Detector](https://github.com/beyondcode/laravel-query-detector)
 - [Clockwork](https://github.com/itsgoingd/clockwork)
 - [Livewire](https://laravel-livewire.com/)
 
