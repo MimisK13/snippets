@@ -71,8 +71,8 @@ module.exports = {
 								children : [
 									{
 										title: 'Many To Many',
-										path: '/php/laravel/relationships/many-to-many.md'
-									}					
+										path: '/php/laravel/relationships/many-to-many.md',
+									},
 								],						
 							},							
 						],
