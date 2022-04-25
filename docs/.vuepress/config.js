@@ -64,6 +64,16 @@ module.exports = {
 							{
 								title: 'Observer',
 								path: '/php/laravel/database/observer.md',						
+							},	
+							{
+								title: 'Relationships',
+								path: '/php/laravel/relationships/',
+								children : [
+									{
+										title: 'Many To Many',
+										path: '/php/laravel/relationships/many-to-many.md'
+									}					
+								],						
 							},							
 						],
 					},					
