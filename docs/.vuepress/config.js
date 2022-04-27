@@ -114,6 +114,16 @@ module.exports = {
 						]
 					},
 					{
+						title: 'Package Development',
+						path: '/php/laravel/package-development/',						
+						children : [
+							{
+								title: 'Views',
+								path: '/php/laravel/package-development/views.md',						
+							},
+						]
+					},
+					{
 						title: 'Packages',
 						path: '/php/laravel/packages.md',						
 					}
