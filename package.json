@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+	"docs:test": "set NODE_OPTIONS=--openssl-legacy-provider",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
