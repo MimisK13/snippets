@@ -73,6 +73,10 @@ module.exports = {
 										title: 'Many To Many',
 										path: '/php/laravel/relationships/many-to-many.md',
 									},
+									{
+										title: 'Belongs To Many',
+										path: '/php/laravel/relationships/belongs-to-many.md',
+									}
 								],						
 							},							
 						],
