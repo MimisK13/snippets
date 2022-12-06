@@ -41,11 +41,82 @@ php artisan migrate
 ## Media
 - [Laravel Media Library](https://github.com/spatie/laravel-medialibrary)
 
+
+## Flash Alerts Notifications
+
+- [spatie/laravel-flash](https://github.com/spatie/laravel-flash)
+
+#### Installation
+
+```bash
+composer require spatie/laravel-flash
+```
+
+#### Usage
+
+```php
+class MyController
+{
+    public function store()
+    {
+        // …
+
+        flash('My message');
+
+        return back();
+    }
+}
+```
+
+```php
+@if(flash()->message)
+    <div>
+        {{ flash()->message }}
+    </div>
+@endif
+```
+
+### Add Service Provider
+
+```bash
+php artisan make:provider FlashServiceProvider
+```
+
+```php
+// FlashServiceProvider
+
+public function boot()
+{
+	Flash::levels([
+		'success' => 'alert-success',
+		'warning' => 'alert-warning',
+		'error' => 'alert-error',
+	]);
+}
+```
+
+```php
+// View
+
+@if (flash()->message)
+    <div class="{{ flash()->class }}">
+        {{ flash()->message }}
+    </div>
+
+    @if(flash()->level === 'error')
+        This was an error.
+    @endif
+@endif
+```
+
+
 ## Others
 - [cviebrock/eloquent-sluggable](https://github.com/cviebrock/eloquent-sluggable) 
 - [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)
 - [SpartnerNL/Laravel-Excel](https://github.com/SpartnerNL/Laravel-Excel)
 - [spatie/laravel-collection-macros](https://github.com/spatie/laravel-collection-macros)
 
-# Links
+
+
+## Links
 - [drawSQL](https://drawsql.app/)
