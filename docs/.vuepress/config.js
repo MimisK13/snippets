@@ -244,6 +244,7 @@ module.exports = {
 		]
 	},	
 	plugins: [
+		['@vuepress/pwa'],
 		['@vuepress/back-to-top', true],
 		[
 			'@vuepress/search', 
