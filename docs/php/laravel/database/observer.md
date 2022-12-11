@@ -15,6 +15,8 @@ php artisan make:observer ProductObserver --model=Product
 
 ### Register Observer 
 
+#### Scenario 1
+
 ```App\Providers\EventServiceProvider```
 
 ```php
@@ -30,6 +32,20 @@ public function boot()
 {
     Product::observe(ProductObserver::class);
 }
+```
+
+#### Scenario 2
+```php
+// App/Providers/EventServiceProvider.php
+
+use App\Models\User;
+use App\Observers\UserObserver;
+
+...   
+   
+protected $observers = [
+    User::class => [UserObserver::class],
+];
 ```
 
 ### Example #1
