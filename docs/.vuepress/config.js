@@ -161,7 +161,7 @@ module.exports = {
 									},										
 									{
 										title: 'Spatie/Activity-Log',
-										path: '/php/laravel/packages/guides/activity-log.md',											
+										path: '/php/laravel/packages/guides/spatie-activity-log.md',											
 									},										
 								]									
 							}
