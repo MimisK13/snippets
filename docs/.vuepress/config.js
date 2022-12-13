@@ -154,7 +154,15 @@ module.exports = {
 									{
 										title: 'Spatie/MediaLibrary',
 										path: '/php/laravel/packages/guides/spatie-media-library.md',											
-									},				
+									},		
+									{
+										title: 'Spatie/Comments',
+										path: '/php/laravel/packages/guides/spatie-comments.md',																				
+									},										
+									{
+										title: 'Spatie/Activity-Log',
+										path: '/php/laravel/packages/guides/activity-log.md',											
+									},										
 								]									
 							}
 						]						
