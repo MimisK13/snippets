@@ -1,0 +1,5 @@
+# Spatie/Permissions
+
+[[TOC]]
+
+## Installation

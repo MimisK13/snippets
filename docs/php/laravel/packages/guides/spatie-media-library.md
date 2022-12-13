@@ -1,0 +1,5 @@
+# Spatie/MediaLibrary
+
+[[TOC]]
+
+## Installation

@@ -129,8 +129,36 @@ module.exports = {
 					},
 					{
 						title: 'Packages',
-						path: '/php/laravel/packages.md',						
-					}
+						path: '/php/laravel/packages/',
+						children : [
+							{
+								title: 'Guides',
+								path: '/php/laravel/packages/guides/',
+								children : [
+									{
+										title: 'Spatie/Permissions',
+										path: '/php/laravel/packages/guides/spatie-permissions.md',											
+									},
+									{
+										title: 'Spatie/Settings',
+										path: '/php/laravel/packages/guides/spatie-settings.md',											
+									},
+									{
+										title: 'Spatie/QueryBuilder',
+										path: '/php/laravel/packages/guides/spatie-query-builder.md',											
+									},
+									{
+										title: 'Spatie/Feed',
+										path: '/php/laravel/packages/guides/spatie-feed.md',											
+									},
+									{
+										title: 'Spatie/MediaLibrary',
+										path: '/php/laravel/packages/guides/spatie-media-library.md',											
+									},				
+								]									
+							}
+						]						
+					},
 				]
 			},
 			{

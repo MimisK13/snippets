@@ -1,0 +1,5 @@
+# Spatie/Feed
+
+[[TOC]]
+
+## Installation
