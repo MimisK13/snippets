@@ -187,6 +187,10 @@ module.exports = {
 						title: 'Static Site Generators',
 						path: '/other/static-site-generators.md',
 					},
+					{
+						title: 'Priority Levels',
+						path: '/other/priority-levels.md',
+					},
 				]
 			},
 			{
