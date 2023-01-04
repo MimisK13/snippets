@@ -118,6 +118,10 @@ module.exports = {
 						]
 					},
 					{
+						title: 'Tinker',
+						path: '/php/laravel/tinker/',
+					},
+					{
 						title: 'Package Development',
 						path: '/php/laravel/package-development/',						
 						children : [
