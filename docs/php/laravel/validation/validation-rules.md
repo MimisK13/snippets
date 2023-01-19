@@ -102,6 +102,14 @@
 
 ## In
 
+```php
+'type' => 'in:DEFAULT,SOCIAL'
+```
+
+```php
+['required', Rule::in(['Expense','Income'])],
+```
+
 ## In Array
 
 ## Integer
