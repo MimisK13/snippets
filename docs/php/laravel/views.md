@@ -4,13 +4,40 @@
 
 ## Paginate
 
+### Return to same page after Delete 
+
+```php
+// Controller
+
+public function destroy(Request $request, User $user)
+{
+	$user->delete();
+
+	$paginator = User::paginate(columns: ['id']);
+
+	$redirectToPage = ($request->page <= $paginator->lastPage()) 
+		? $request->page 
+		: $paginator->lastPage();
+
+	return redirect()->route('users.index', ['page' => $redirectToPage]);
+}
+```
+
+```php
+// view
+<input type="hidden" name="page" value="{{ $users->currentPage() }}">
+
+```
+
+### Views 
+
 ```php
 {{ $products->links() }}
 
 {{ $products->links('pagination::bootstrap-4') }}
 ```
 
-## Select Drop Down
+## @selected
 
 ```php
 <select class="form-select @error('category_id') is-invalid @enderror" name="category_id" id="category_id">
@@ -24,6 +51,16 @@
 	@endforeach
 </select>
 <label for="category_id">category</label>
+```
+
+## @disabled
+
+```php
+@disabled($task->is_completed)
+```
+
+```php
+<button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
 ```
 
 ## Textarea
