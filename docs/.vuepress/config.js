@@ -80,6 +80,16 @@ module.exports = {
 								],						
 							},							
 						],
+					},
+					{
+						title: 'Traits',
+						path: '/php/laravel/traits/',
+						children : [
+							{
+								title: 'Scopes',
+								path: '/php/laravel/traits/scopes.md',								
+							},						
+						],						
 					},					
 					{
 						title: 'Controller',
