@@ -115,8 +115,8 @@ public function boot()
 - [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable)
 - [SpartnerNL/Laravel-Excel](https://github.com/SpartnerNL/Laravel-Excel)
 - [spatie/laravel-collection-macros](https://github.com/spatie/laravel-collection-macros)
-
-
+- [SamAsEnd/laravel-make-scope](https://github.com/SamAsEnd/laravel-make-scope)
+- [lorisleiva/laravel-actions](https://github.com/lorisleiva/laravel-actions)
 
 ## Links
 - [drawSQL](https://drawsql.app/)
