@@ -28,6 +28,11 @@
     {
         return $query->whereYear('created_at', Carbon::now()->format('Y'));
     }
+	
+	public function scopeAdmin($query)
+    {
+        return $query->where('admin', 1);
+    }
 ```
 
 ### Usage
