@@ -112,6 +112,29 @@ or
 	});
 ```
 
+## Json
+
+```php
+
+	public function run(): void
+	{
+		$json = File::get(path: 'database/json/posts.json');
+		$posts = collect(json_decode($json));
+		
+		
+		$posts->each(function ($post){
+			Post::create([
+				'title' 		=> $post->title,			
+				'slug' 			=> $post->slug,
+				'excerpt' 		=> $post->excerpt,
+				'description' 	=> $post->description,
+				'is_published' 	=> $post->is_published,
+				'min_to_read' 	=> $post->min_to_read
+			]);
+		});
+	}
+```
+
 ## Registering
 
 ```php
