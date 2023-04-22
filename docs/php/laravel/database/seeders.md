@@ -85,7 +85,7 @@ class UserSeeder extends Seeder
 	$users->each(function ($user){
 		User::create([
 			'name' => $user['name'],
-			'email' => $user['email],
+			'email' => $user['email'],
 			'password' => $user['password']
 		]);
 	});
