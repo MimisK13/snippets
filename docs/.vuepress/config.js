@@ -27,7 +27,7 @@ module.exports = {
 						path: '/php/classes/pagination.md',
 					},
 				]
-			},
+			},		
 			{
 				title: 'Laravel',	
 				path: '/php/laravel/',				
@@ -180,6 +180,16 @@ module.exports = {
 								]									
 							}
 						]						
+					},
+				]
+			},
+			{
+				title: 'Nova',
+				collapsable: true,
+				children: [
+					{
+						title: 'Fields',
+						path: '/php/nova/fields.md',
 					},
 				]
 			},
