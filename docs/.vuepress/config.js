@@ -139,6 +139,10 @@ module.exports = {
 								title: 'Views',
 								path: '/php/laravel/package-development/views.md',						
 							},
+							{
+								title: 'laravel-packager',
+								path: '/php/laravel/package-development/laravel-packager.md',						
+							},
 						]
 					},
 					{
