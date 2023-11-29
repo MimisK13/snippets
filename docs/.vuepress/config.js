@@ -110,6 +110,10 @@ module.exports = {
 						],						
 					},
 					{
+						title: 'Enums',
+						path: '/php/laravel/enums.md',						
+					},
+					{
 						title: 'Routes',
 						path: '/php/laravel/routes.md',						
 					},
