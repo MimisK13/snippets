@@ -90,3 +90,5 @@ protected $casts = [
 	
 </select>
 ```
+
+Source: https://jeffochoa.me/php-enums-best-practices?utm_source=laravelnews&utm_medium=link&utm_campaign=laravelnews
