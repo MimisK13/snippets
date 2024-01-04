@@ -1,8 +1,6 @@
 # Blade Directives
 
-
-
-[toc]
+[[toc]]
 
 ## If Statements
 
@@ -38,8 +36,6 @@ In addition to the conditional directives already discussed, the `@isset` and `@
 @endempty
 ```
 
-
-
 ## Authentication Directives
 
 The `@auth` and `@guest` directives may be used to quickly determine if the current user is [authenticated](https://laravel.com/docs/10.x/authentication) or is a guest:
@@ -66,8 +62,6 @@ If needed, you may specify the authentication guard that should be checked when 
 @endguest
 ```
 
-
-
 ## Environment Directives
 
 You may check if the application is running in the production environment using the `@production` directive:
@@ -89,8 +83,6 @@ Or, you may determine if the application is running in a specific environment us
     // The application is running in "staging" or "production"...
 @endenv
 ```
-
-
 
 ## Section Directives
 
@@ -116,8 +108,6 @@ You may use the `sectionMissing` directive to determine if a section does not ha
 @endif
 ```
 
-
-
 ## Session Directives
 
 The `@session` directive may be used to determine if a [session](https://laravel.com/docs/10.x/session) value exists. If the session value exists, the template contents within the `@session` and `@endsession` directives will be evaluated. Within the `@session` directive's contents, you may echo the `$value` variable to display the session value:
@@ -129,8 +119,6 @@ The `@session` directive may be used to determine if a [session](https://laravel
     </div>
 @endsession
 ```
-
-
 
 ## Switch Statements
 
@@ -150,8 +138,6 @@ Switch statements can be constructed using the `@switch`, `@case`, `@break`, `@d
         Default case...
 @endswitch
 ```
-
-
 
 ## Loops
 
@@ -177,8 +163,6 @@ In addition to conditional statements, Blade provides simple directives for work
 @endwhile
 ```
 
-
-
 ## The @once Directive
 
 The `@once` directive allows you to define a portion of the template that will only be evaluated once per rendering cycle. This may be useful for pushing a given piece of JavaScript into the page's header using [stacks](https://laravel.com/docs/10.x/blade#stacks). For example, if you are rendering a given [component](https://laravel.com/docs/10.x/blade#components) within a loop, you may wish to only push the JavaScript to the header the first time the component is rendered:
@@ -202,8 +186,3 @@ Since the `@once` directive is often used in conjunction with the `@push` or `@p
     </script>
 @endPushOnce
 ```
-
-
-
-
-
