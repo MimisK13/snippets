@@ -121,6 +121,20 @@ module.exports = {
 						title: 'Views',
 						path: '/php/laravel/views.md',						
 					},
+					{		
+						title: 'Blade',
+						path: '/php/laravel/blade/',						
+						children : [
+							{
+								title: 'Directives',
+								path: '/php/laravel/blade/directives.md',
+							},
+							{
+								title: 'Components',
+								path: '/php/laravel/blade/components.md',
+							},
+						],
+					},					
 					{
 						title: 'Testing',
 						path: '/php/laravel/testing/',						
