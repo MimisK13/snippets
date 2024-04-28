@@ -129,3 +129,9 @@ protected function prepareForValidation()
     ]);
 }
 ```
+
+## 
+
+```php
+	protected $stopOnFirstFailure = true;
+```

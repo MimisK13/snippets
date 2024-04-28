@@ -44,13 +44,13 @@ class DemoController extends Controller
     public function index()
     {
         $visitors = Visitor::select(
-                            "id" ,
-                            DB::raw("(sum(click)) as total_click"),
-                            DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
-                            )
-                            ->orderBy('created_at')
-                            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
-                            ->get();
+			"id" ,
+			DB::raw("(sum(click)) as total_click"),
+			DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
+			)
+			->orderBy('created_at')
+			->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
+			->get();
   
         dd($visitors);
     }
@@ -163,4 +163,21 @@ class UserController extends Controller
 $subscriptions = Subscription::select('date', 'amount')
 	->whereYear('date', Carbon::now()->year)
 	->sum('amount');
+```
+
+## Stop on First Validation Error
+
+By default, Laravel validation errors will be returned in a list, checking all validation rules. But if you want the process to stop after the first error, use validation rule called bail:
+
+```php
+$request->validate([
+    'title' => 'bail|required|unique:posts|max:255',
+    'body' => 'required',
+]);
+```
+
+If you need to stop validation on the first error in FormRequest class, you can set stopOnFirstFailure property to true:
+
+```php
+	protected $stopOnFirstFailure = true;
 ```
