@@ -26,6 +26,10 @@ module.exports = {
 						title: 'Pagination',
 						path: '/php/classes/pagination.md',
 					},
+					{
+						title: 'Arrays',
+						path: '/php/arrays/sorting-arrays.md',
+					},
 				]
 			},		
 			{

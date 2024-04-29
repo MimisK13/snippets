@@ -53,6 +53,18 @@ public function destroy(Request $request, User $user)
 <label for="category_id">category</label>
 ```
 
+## @checked
+
+```php
+	// Before Laravel 9:
+	<input type="radio" name="active" value="1" {{ old('active', $user->active) ? 'checked' : '' }}/>
+	<input type="radio" name="active" value="0" {{ old('active', $user->active) ? '' : 'checked' }}/>
+	 
+	// Laravel 9
+	<input type="radio" name="active" value="1" @checked(old('active', $user->active))/>
+	<input type="radio" name="active" value="0" @checked(!old('active', $user->active))/>
+```
+
 ## @disabled
 
 ```php
