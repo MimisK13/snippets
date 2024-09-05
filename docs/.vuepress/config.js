@@ -341,14 +341,7 @@ module.exports = {
 				]
 			},			
 		]
-	},	
-	head: [
-		['script', { src: 'https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js' }],
-		['script', { src: 'https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js' }],
-		['script', { src: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js' }],
-		['script', { src: 'https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js' }],
-		['script', { src: 'https://cdn.tailwindcss.com' }],
-	],
+	},
 	plugins: [
 		['@vuepress/pwa'],
 		['@vuepress/back-to-top', true],
@@ -367,17 +360,6 @@ module.exports = {
 			}
 		],
 		['vuepress-plugin-code-copy', true],
-		// ['demo-block'],
-		// ['demo-code', {
-			// jsLibs: [
-				// 'https://cdn.tailwindcss.com',
-			// ],
-			// minHeight: 500,
-			// onlineBtns: {
-				// codepen: false,
-				// jsfiddle: false,
-				// codesandbox: false,
-			// },		
-		// }],
+		['@vuepress/register-components'],
 	]
 }
