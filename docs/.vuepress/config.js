@@ -100,6 +100,10 @@ module.exports = {
 						path: '/php/laravel/controller.md',						
 					},
 					{
+						title: 'Policies',
+						path: '/php/laravel/policies.md',
+					},
+					{
 						title: 'Validation',
 						path: '/php/laravel/validation/',
 						children : [
