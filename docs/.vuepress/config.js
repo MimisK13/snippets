@@ -225,7 +225,7 @@ module.exports = {
 			},
 			{
 				title: 'Livewire',
-				collapsable: true,
+				initialOpenGroupIndex: -1,
 				children: [
 					{
 						title: 'Installation',
@@ -234,6 +234,12 @@ module.exports = {
 					{
 						title: 'Components',
 						path: '/livewire/components/',
+						children: [
+							{
+								title: 'Pagination Dropdown',
+								path: '/livewire/components/pagination.md',
+							},
+						]
 					},
 				]
 			},
