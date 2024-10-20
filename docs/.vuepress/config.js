@@ -231,6 +231,10 @@ module.exports = {
 						title: 'Installation',
 						path: '/livewire/installation.md',
 					},
+					{
+						title: 'Components',
+						path: '/livewire/components/',
+					},
 				]
 			},
 			{
