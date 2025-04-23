@@ -355,9 +355,15 @@ module.exports = {
 				]
 			},
 			{
-				title: 'Quick Notes',
-				path: 'quick-notes.md',
-			}
+				title: 'Draft',
+				initialOpenGroupIndex: -1,
+				children: [
+					{
+						title: 'Quick Notes',
+						path: '/draft/quick-notes.md',
+					},
+				]
+			},
 		]
 	},
 	plugins: [
