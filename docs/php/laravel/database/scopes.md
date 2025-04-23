@@ -279,3 +279,25 @@ $categoryProducts = Product::byCategory(1)->get();
 $postsBetweenDates = Post::publishedBetween('2023-01-01', '2023-07-31')->get();
 ```
 
+## New
+
+### Before
+
+```php
+protected function scopePopular(Builder $query): void
+{
+    $query->where('votes', '>', 100);
+}
+```
+
+### After v12.x
+
+```php
+use Illuminate\Database\Eloquent\Attributes\Scope;
+
+#[Scope]
+protected function popular(Builder $query): void
+{
+    $query->where('votes', '>', 100);
+}
+```

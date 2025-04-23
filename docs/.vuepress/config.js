@@ -353,7 +353,11 @@ module.exports = {
 											
 					},				
 				]
-			},			
+			},
+			{
+				title: 'Quick Notes',
+				path: 'quick-notes.md',
+			}
 		]
 	},
 	plugins: [
