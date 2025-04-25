@@ -344,7 +344,12 @@ module.exports = {
 						]							
 					},
 				]
-			},	
+			},			
+			{
+				title: 'HTMX',
+				initialOpenGroupIndex: -1,
+				path: '/htmx/'
+			},
 			{
 				title: 'Python',
 				initialOpenGroupIndex: -1,
