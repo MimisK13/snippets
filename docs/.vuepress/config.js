@@ -348,7 +348,12 @@ module.exports = {
 			{
 				title: 'HTMX',
 				initialOpenGroupIndex: -1,
-				path: '/htmx/'
+				children: [
+					{
+						title: 'Quick Notes',
+						path: '/htmx/',
+					},
+				]
 			},
 			{
 				title: 'Python',
