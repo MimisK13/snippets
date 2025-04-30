@@ -127,7 +127,7 @@ module.exports = {
 					},
 					{
 						title: 'Task Scheduling',
-						path: '/php/laravel/task-scheduling/readme.md',
+						path: '/php/laravel/task-scheduling.md',
 					},
 					{
 						title: 'Views',
