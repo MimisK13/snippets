@@ -82,7 +82,7 @@ module.exports = {
 										path: '/php/laravel/relationships/belongs-to-many.md',
 									}
 								],						
-							},							
+							},
 						],
 					},
 					{
@@ -124,6 +124,10 @@ module.exports = {
 					{
 						title: 'Routes',
 						path: '/php/laravel/routes.md',						
+					},
+					{
+						title: 'Task Scheduling',
+						path: '/php/laravel/task-scheduling',
 					},
 					{
 						title: 'Views',
