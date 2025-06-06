@@ -374,7 +374,7 @@ module.exports = {
 				children: [
 					{
 						title: 'Database',
-						path: '/tools/database/readme.md',
+						path: '/tools/database.md',
 					},
 				]
 			},
