@@ -369,6 +369,16 @@ module.exports = {
 				]
 			},
 			{
+				title: 'Tools',
+				initialOpenGroupIndex: -1,
+				children: [
+					{
+						title: 'Database',
+						path: '/tools/database/readme.md',
+					},
+				]
+			},
+			{
 				title: 'Draft',
 				initialOpenGroupIndex: -1,
 				children: [
