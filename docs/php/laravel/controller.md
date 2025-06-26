@@ -155,6 +155,8 @@ public function destroy(Product $product)
 
 ## Middleware
 
+Before Laravel 11.x
+
 ```php
 public function __construct()
 {
@@ -181,5 +183,21 @@ public function __construct()
 			'index',
 			'show'
 		]);
+}
+```
+
+After Laravel 11.x
+
+```php
+public static function middleware(): array
+{
+    return [
+        
+        // except
+        new Middleware('auth', except: ['index', 'show']),
+        
+        // only
+        new Middleware('auth', only: ['create', 'store', 'edit', 'update', 'destroy']),
+    ];
 }
 ```
