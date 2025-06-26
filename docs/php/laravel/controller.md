@@ -189,15 +189,22 @@ public function __construct()
 After Laravel 11.x
 
 ```php
-public static function middleware(): array
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+
+class AuctionController extends Controller implements HasMiddleware
 {
-    return [
-        
-        // except
-        new Middleware('auth', except: ['index', 'show']),
-        
-        // only
-        new Middleware('auth', only: ['create', 'store', 'edit', 'update', 'destroy']),
-    ];
-}
+    public static function middleware(): array
+    {
+        return [
+            
+            // except
+            new Middleware('auth', except: ['index', 'show']),
+            
+            // only
+            new Middleware('auth', only: ['create', 'store', 'edit', 'update', 'destroy']),
+        ];
+    }
+
+    ...
 ```
