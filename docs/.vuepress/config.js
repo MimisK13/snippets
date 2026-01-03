@@ -38,6 +38,14 @@ module.exports = {
 				initialOpenGroupIndex: -1,
 				children: [
 					{
+						title: 'Authorization',
+						path: '/php/laravel/authorization/',
+						children : [
+							'/php/laravel/authorization/gates.md',
+							'/php/laravel/authorization/policies.md',
+						],
+					},
+					{
 						title: 'Database',
 						path: '/php/laravel/database/',						
 						children : [
