@@ -43,6 +43,25 @@ module.exports = {
 						children : [
 							'/php/laravel/authorization/gates.md',
 							'/php/laravel/authorization/policies.md',
+
+							{
+								title: 'Blade Directives',
+								path: '/php/laravel/authorization/blade-directives/',
+								children: [
+									{
+										title: '@can',
+										path: '/php/laravel/authorization/blade-directives/can.md',
+									},
+									{
+										title: '@cannot',
+										path: '/php/laravel/authorization/blade-directives/cannot.md',
+									},
+									{
+										title: '@canany',
+										path: '/php/laravel/authorization/blade-directives/canany.md',
+									},
+								],
+							},
 						],
 					},
 					{
