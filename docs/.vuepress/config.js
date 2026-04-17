@@ -211,6 +211,10 @@ module.exports = {
 								path: '/php/laravel/packages/guides/',
 								children : [
 									{
+										title: 'laravel/pint',
+										path: '/php/laravel/packages/guides/laravel-pint.md',
+									},
+									{
 										title: 'Spatie/Permissions',
 										path: '/php/laravel/packages/guides/spatie-permissions.md',											
 									},
