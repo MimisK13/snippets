@@ -160,6 +160,10 @@ module.exports = {
 						title: 'Views',
 						path: '/php/laravel/views.md',						
 					},
+					{
+						title: 'Sanctum Auth (Next.js)',
+						path: '/nextjs/laravel-sanctum-auth.md',
+					},
 					{		
 						title: 'Blade',
 						path: '/php/laravel/blade/',						
@@ -289,6 +293,22 @@ module.exports = {
 					{
 						title: 'Priority Levels',
 						path: '/other/priority-levels.md',
+					},
+				]
+			},
+			{
+				title: 'Next.js',
+				initialOpenGroupIndex: -1,
+				children: [
+					{
+						title: 'Guides',
+						path: '/nextjs/',
+						children: [
+							{
+								title: 'Laravel Sanctum Auth',
+								path: '/nextjs/laravel-sanctum-auth.md',
+							},
+						]
 					},
 				]
 			},
