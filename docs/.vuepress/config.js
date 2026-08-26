@@ -81,6 +81,10 @@ module.exports = {
 								path: '/php/laravel/database/queries.md',
 							},
 							{
+								title: 'Transactions',
+								path: '/php/laravel/database/transactions.md',
+							},
+							{
 								title: 'Migrations',
 								path: '/php/laravel/database/migrations.md',
 							},
