@@ -287,6 +287,20 @@ module.exports = {
 				]
 			},
 			{
+				title: 'Flux UI',
+				initialOpenGroupIndex: -1,
+				children: [
+					{
+						title: 'Tables',
+						path: '/flux-ui/tables.md',
+					},
+					{
+						title: 'Dropdowns',
+						path: '/flux-ui/dropdowns.md',
+					},
+				]
+			},
+			{
 				title: 'Other',
 				collapsable: true,
 				children: [
@@ -323,6 +337,8 @@ module.exports = {
 					{
 						title: 'Modules',
 						path: '/javascript/modules.md',
+					},
+					{
 						title: 'AlpineJs',	
 						path: '/javascript/alpinejs/',					
 						children: [
