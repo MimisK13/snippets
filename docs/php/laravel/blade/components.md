@@ -12,6 +12,8 @@
 
 ## Spinner
 
+Save as `resources/views/components/spinner.blade.php`.
+
 ```php
 @props(['size' => '4'])
 
@@ -21,7 +23,17 @@
 </svg>
 ```
 
+### Usage
+
+```php
+<x-spinner />
+
+<x-spinner size="6" class="text-blue-500" />
+```
+
 ## Chevron-down icon
+
+Save as `resources/views/components/icons/chevron-down.blade.php`.
 
 ```php
 @props([
@@ -31,5 +43,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-{{ $size }}">
     <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 </svg>
+```
+
+### Usage
+
+```php
+<x-icons.chevron-down />
+
+<x-icons.chevron-down size="8" class="text-gray-500" />
 ```
 
