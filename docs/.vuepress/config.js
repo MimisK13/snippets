@@ -131,6 +131,10 @@ module.exports = {
 						path: '/php/laravel/controller.md',						
 					},
 					{
+						title: 'Pipelines',
+						path: '/php/laravel/pipelines.md',
+					},
+					{
 						title: 'Policies',
 						path: '/php/laravel/policies.md',
 					},
