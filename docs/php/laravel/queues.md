@@ -195,6 +195,52 @@ Queue::forward('reports', 'reports.fifo', 'cloud');
 
 Do not use `Queue::forward()` as business logic, throttling, pausing, or retry control. It changes where new jobs are pushed; it does not pause consumption or move jobs that already exist.[7]
 
+## Track worker lifecycle metrics with `WorkerStopping`
+
+Laravel 13.18.0 added `jobsProcessed` and `lastJobProcessedAt` to the `WorkerStopping` event via framework PRs #60592 and #60608.[10][11][12][13] Use these fields to log worker throughput when a daemon exits, without reconstructing the lifecycle from individual job events.[10][12]
+
+```php
+use Illuminate\Queue\Events\WorkerStopping;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
+
+Event::listen(function (WorkerStopping $event) {
+    Log::info('Queue worker stopped', [
+        'jobs_processed' => $event->jobsProcessed,
+        'last_job_processed_at' => $event->lastJobProcessedAt,
+    ]);
+});
+```
+
+`lastJobProcessedAt` is a microtime timestamp of the final processed job, and it stays `null` when the worker did not process any jobs.[10][13]
+
+```php
+Event::listen(function (WorkerStopping $event) {
+    if ($event->lastJobProcessedAt === null) {
+        Log::info('Worker stopped without processing jobs');
+    }
+});
+```
+
+## Good practice: worker lifecycle metrics
+
+Use these fields to tune worker options such as `--max-time`, `--max-jobs`, memory limits, and process-manager restart behavior.[12]
+
+```php
+Event::listen(function (WorkerStopping $event) {
+    metrics()->gauge('queue.worker.jobs_processed', $event->jobsProcessed ?? 0);
+
+    if ($event->lastJobProcessedAt !== null) {
+        metrics()->timing(
+            'queue.worker.seconds_since_last_job',
+            microtime(true) - $event->lastJobProcessedAt,
+        );
+    }
+});
+```
+
+Do not treat `lastJobProcessedAt` as an application timestamp. It is a worker runtime timestamp meant for lifecycle/telemetry use.
+
 ## Log why a queue worker stopped
 
 Laravel 13.30.0 added queue worker stop reasons to `php artisan queue:work` output via framework PR #61339.[5][6] This helps distinguish normal restarts from memory limits, timeouts, lost connections, or deploy-triggered `queue:restart` signals.[5]
@@ -296,6 +342,8 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 - `Queue::totalSize()` PR: `laravel/framework#61373` by Jack Bayliss.[1][2]
 - `Queue::forward()` introduced in: Laravel Framework `v13.26.0`.[7][9]
 - `Queue::forward()` PR: `laravel/framework#61188`.[7][8]
+- `WorkerStopping::$jobsProcessed` and `WorkerStopping::$lastJobProcessedAt` introduced in: Laravel Framework `v13.18.0`.[10][11]
+- Worker lifecycle metrics PRs: `laravel/framework#60592` and `laravel/framework#60608`.[12][13]
 - Queue worker stop reasons in `queue:work` output introduced in: Laravel Framework `v13.30.0`.[5][6]
 - Worker stop reasons PR: `laravel/framework#61339`.[5][6]
 - If you maintain snippets for older Laravel versions, keep the manual sum as the `Queue::totalSize()` fallback.
@@ -311,3 +359,7 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 [7] Laravel News: Queue::forward(): Reroute Laravel Queues in One Place — https://laravel-news.com/laravel-queue-forward
 [8] Laravel Framework PR #61188 — https://github.com/laravel/framework/pull/61188
 [9] Laravel Framework v13.26.0 release notes — https://github.com/laravel/framework/releases/tag/v13.26.0
+[10] Laravel News: Worker Metrics on the WorkerStopping Event in Laravel 13.18 — https://laravel-news.com/laravel-13-18-0
+[11] Laravel Framework v13.18.0 release notes — https://github.com/laravel/framework/releases/tag/v13.18.0
+[12] Laravel Framework PR #60592 — https://github.com/laravel/framework/pull/60592
+[13] Laravel Framework PR #60608 — https://github.com/laravel/framework/pull/60608
