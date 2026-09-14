@@ -122,11 +122,108 @@ if (Queue::totalSize() > 10_000) {
 
 Prefer reporting, alerting, or investigating before clearing or restarting queue infrastructure.
 
+## Log why a queue worker stopped
+
+Laravel 13.30.0 added queue worker stop reasons to `php artisan queue:work` output via framework PR #61339.[5][6] This helps distinguish normal restarts from memory limits, timeouts, lost connections, or deploy-triggered `queue:restart` signals.[5]
+
+Plain output now includes the stop reason:
+
+```text
+2026-09-01 13:20:40 Worker STOPPED Memory limit exceeded
+```
+
+With `--json`, the stopped record includes a stable `reason`, an `exit_code`, the number of processed jobs, memory usage, and a timestamp.[5]
+
+```bash
+php artisan queue:work --json --max-time=3600 2>&1 \
+    | jq -c 'select(.status == "stopped")'
+```
+
+Example stopped record:
+
+```json
+{
+  "level": "info",
+  "status": "stopped",
+  "reason": "empty",
+  "exit_code": 0,
+  "jobs_processed": 12,
+  "memory": 34.0,
+  "timestamp": "2026-09-01T13:20:40.118273+00:00"
+}
+```
+
+The same data is available through the `WorkerStopping` event when you need to push stop reasons into logs or metrics.[5]
+
+```php
+use Illuminate\Queue\Events\WorkerStopping;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
+
+Event::listen(function (WorkerStopping $event) {
+    Log::info('Worker stopped', [
+        'reason' => $event->reason?->value,
+        'status' => $event->status,
+        'jobs' => $event->jobsProcessed,
+        'memory' => $event->memoryUsage,
+    ]);
+});
+```
+
+Known stop reasons include `empty`, `empty_for`, `max_jobs`, `max_time`, `restart_signal`, `interrupted`, `lost_connection`, `memory`, and `timed_out`.[5]
+
+## Good practice: worker stop observability
+
+Log or metric the `reason` field when workers are managed by Supervisor, systemd, containers, or deploy scripts.
+
+```php
+Event::listen(function (WorkerStopping $event) {
+    metrics()->increment('queue.worker.stopped', tags: [
+        'reason' => $event->reason?->value ?? 'unknown',
+        'exit_code' => (string) $event->status,
+    ]);
+});
+```
+
+Use `--json` when your process manager already captures stdout and you want log pipelines to filter stopped records.
+
+```bash
+php artisan queue:work redis --queue=default --json
+```
+
+## Bad practice: treating every stop as a crash
+
+Do not page the team for every worker stop. Some reasons are expected and exit with code `0`, such as `max_jobs`, `max_time`, `empty`, or `restart_signal`.[5]
+
+```php
+// Bad: this treats planned worker recycling as an incident.
+Event::listen(function (WorkerStopping $event) {
+    alert('Queue worker stopped');
+});
+```
+
+Prefer severity based on the reason and exit code.
+
+```php
+Event::listen(function (WorkerStopping $event) {
+    if (in_array($event->reason?->value, ['memory', 'timed_out', 'lost_connection'], true)) {
+        alert('Queue worker stopped unexpectedly', [
+            'reason' => $event->reason?->value,
+            'exit_code' => $event->status,
+        ]);
+    }
+});
+```
+
+External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event because the worker cannot run its shutdown code.[5]
+
 ## Version note
 
-- Introduced in: Laravel Framework `v13.31.0`.[1][3]
-- PR: `laravel/framework#61373` by Jack Bayliss.[1][2]
-- If you maintain snippets for older Laravel versions, keep the manual sum as the fallback.
+- `Queue::totalSize()` introduced in: Laravel Framework `v13.31.0`.[1][3]
+- `Queue::totalSize()` PR: `laravel/framework#61373` by Jack Bayliss.[1][2]
+- Queue worker stop reasons in `queue:work` output introduced in: Laravel Framework `v13.30.0`.[5][6]
+- Worker stop reasons PR: `laravel/framework#61339`.[5][6]
+- If you maintain snippets for older Laravel versions, keep the manual sum as the `Queue::totalSize()` fallback.
 
 ## Sources
 
@@ -134,3 +231,5 @@ Prefer reporting, alerting, or investigating before clearing or restarting queue
 [2] Laravel Framework PR #61373 — https://github.com/laravel/framework/pull/61373
 [3] Laravel News: Queue totalSize() and JobInterrupted Event in Laravel 13.31 — https://laravel-news.com/laravel-13-31-0
 [4] Laravel 13.x Queues: Monitoring Your Queues — https://laravel.com/docs/13.x/queues#monitoring-your-queues
+[5] Laravel News: Laravel queue:work Now Prints Why the Worker Stopped — https://laravel-news.com/laravel-queue-worker-stop-reasons
+[6] Laravel Framework PR #61339 — https://github.com/laravel/framework/pull/61339
