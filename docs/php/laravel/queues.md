@@ -122,6 +122,70 @@ if (Queue::totalSize() > 10_000) {
 
 Prefer reporting, alerting, or investigating before clearing or restarting queue infrastructure.
 
+## Inspect jobs across every queue
+
+Laravel 13.8.0 introduced queue-wide inspection methods via framework PR #59997.[17][18][19] Use them when you need pending, delayed, or reserved jobs across all queues on a connection without manually merging per-queue results.[17][19]
+
+```php
+use Illuminate\Support\Facades\Queue;
+
+$pending = Queue::allPendingJobs();
+$delayed = Queue::allDelayedJobs();
+$reserved = Queue::allReservedJobs();
+```
+
+Before these methods, checking several queues required one call per queue and manual merging.[17][19]
+
+```php
+// Before: one query per queue.
+$reserved = Queue::reservedJobs('default')
+    ->merge(Queue::reservedJobs('emails'))
+    ->merge(Queue::reservedJobs('reports'));
+
+// After: one call across every queue.
+$reserved = Queue::allReservedJobs();
+```
+
+Each item is an `InspectedJob` with properties such as `uuid`, `name`, `attempts`, and `createdAt`.[17][19]
+
+```php
+Queue::allReservedJobs()->each(function ($job) {
+    logger()->info('Reserved job still running', [
+        'uuid' => $job->uuid,
+        'name' => $job->name,
+        'attempts' => $job->attempts,
+        'created_at' => $job->createdAt,
+    ]);
+});
+```
+
+## Good practice: deployment safety checks
+
+Use `allReservedJobs()` before stopping workers during deploys when you need to avoid killing active jobs.[17][19]
+
+```php
+use Illuminate\Support\Facades\Queue;
+
+if (Queue::allReservedJobs()->isNotEmpty()) {
+    throw new RuntimeException('Workers still have reserved jobs. Wait before shutdown.');
+}
+```
+
+## Bad practice: treating inspection as a queue dashboard replacement
+
+Do not poll these methods aggressively from public endpoints. They can inspect every queue and may be expensive on large installations.
+
+```php
+// Bad: unbounded public polling endpoint.
+Route::get('/queue/jobs', fn () => [
+    'pending' => Queue::allPendingJobs(),
+    'delayed' => Queue::allDelayedJobs(),
+    'reserved' => Queue::allReservedJobs(),
+]);
+```
+
+Prefer internal tooling, scheduled checks, logs, or a proper queue dashboard for continuous monitoring.
+
 ## Dispatch many jobs efficiently with `Bus::bulk()`
 
 Laravel 13.13.0 introduced `Bus::bulk()` via framework PR #60297.[14][15][16] Use it when you need to enqueue many independent jobs efficiently, but do not need `Bus::batch()` progress tracking, callbacks, cancellation, or database batch records.[14][16]
@@ -263,6 +327,35 @@ Queue::forward('reports', 'reports.fifo', 'cloud');
 ```
 
 Do not use `Queue::forward()` as business logic, throttling, pausing, or retry control. It changes where new jobs are pushed; it does not pause consumption or move jobs that already exist.[7]
+
+## Log worker pause and resume signals
+
+Laravel 13.8.0 introduced `WorkerPausing` and `WorkerResuming` events via framework PR #59895.[17][18][20] These events are dispatched when a queue worker receives `SIGUSR2` to pause or `SIGCONT` to resume.[17][20]
+
+```php
+use Illuminate\Queue\Events\WorkerPausing;
+use Illuminate\Queue\Events\WorkerResuming;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
+
+Event::listen(function (WorkerPausing $event) {
+    Log::info('Queue worker pausing', [
+        'connection' => $event->connectionName,
+        'queue' => $event->queue,
+    ]);
+});
+
+Event::listen(function (WorkerResuming $event) {
+    Log::info('Queue worker resuming', [
+        'connection' => $event->connectionName,
+        'queue' => $event->queue,
+    ]);
+});
+```
+
+Use these for deployment observability when workers are paused/resumed by infrastructure, Supervisor/systemd wrappers, or container orchestration.
+
+Do not use these events to infer that jobs completed successfully. They describe worker state transitions, not job outcomes.
 
 ## Track worker lifecycle metrics with `WorkerStopping`
 
@@ -409,6 +502,10 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 
 - `Queue::totalSize()` introduced in: Laravel Framework `v13.31.0`.[1][3]
 - `Queue::totalSize()` PR: `laravel/framework#61373` by Jack Bayliss.[1][2]
+- Queue-wide inspection methods `Queue::allPendingJobs()`, `Queue::allDelayedJobs()`, and `Queue::allReservedJobs()` introduced in: Laravel Framework `v13.8.0`.[17][18]
+- Queue-wide inspection PR: `laravel/framework#59997`.[17][19]
+- `WorkerPausing` and `WorkerResuming` events introduced in: Laravel Framework `v13.8.0`.[17][18]
+- Worker pause/resume events PR: `laravel/framework#59895`.[17][20]
 - `Bus::bulk()` introduced in: Laravel Framework `v13.13.0`.[14][15]
 - `Bus::bulk()` PR: `laravel/framework#60297`.[14][16]
 - `Queue::forward()` introduced in: Laravel Framework `v13.26.0`.[7][9]
@@ -437,3 +534,7 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 [14] Laravel News: Bulk Job Dispatching with Bus::bulk() in Laravel 13.13 — https://laravel-news.com/laravel-13-13-0
 [15] Laravel Framework v13.13.0 release notes — https://github.com/laravel/framework/releases/tag/v13.13.0
 [16] Laravel Framework PR #60297 — https://github.com/laravel/framework/pull/60297
+[17] Laravel News: Queue-Wide Inspection Methods in Laravel 13.8.0 — https://laravel-news.com/laravel-13-8-0
+[18] Laravel Framework v13.8.0 release notes — https://github.com/laravel/framework/releases/tag/v13.8.0
+[19] Laravel Framework PR #59997 — https://github.com/laravel/framework/pull/59997
+[20] Laravel Framework PR #59895 — https://github.com/laravel/framework/pull/59895
