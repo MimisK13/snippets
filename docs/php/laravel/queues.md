@@ -122,6 +122,79 @@ if (Queue::totalSize() > 10_000) {
 
 Prefer reporting, alerting, or investigating before clearing or restarting queue infrastructure.
 
+## Reroute queue names and connections with `Queue::forward()`
+
+Laravel 13.26.0 introduced `Queue::forward()` via framework PR #61188.[7][8][9] Use it when application code dispatches to logical queue names, but a specific environment should send those jobs to a different queue name, connection, or both.[7][8]
+
+Register forwards from a service provider, usually `AppServiceProvider::boot()`.[7]
+
+```php
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        if ($this->app->isProduction()) {
+            Queue::forward('reports', 'reports.fifo', 'cloud');
+        }
+    }
+}
+```
+
+Supported shapes include renaming a queue, moving it to another connection, or mapping several queues at once.[7]
+
+```php
+use Illuminate\Support\Facades\Queue;
+
+// Rename the queue and move it to another connection.
+Queue::forward('reports', 'reports.fifo', 'cloud');
+
+// Keep the same queue name, but move it to another connection.
+Queue::forward('payments', connection: 'cloud');
+
+// Rename on the same connection.
+Queue::forward('updates', 'notifications');
+
+// Forward several queues to one connection.
+Queue::forward([
+    'reports' => 'reports.fifo',
+    'emails' => 'emails.fifo',
+], connection: 'cloud');
+```
+
+This is useful when production uses different queue infrastructure than local or staging environments. For example, local code can keep dispatching to `reports`, while production forwards that logical queue to `reports.fifo` on a managed queue connection.[7][8]
+
+## Good practice: centralized queue routing
+
+Keep stable logical queue names in jobs and dispatch sites, then forward them at the infrastructure boundary.
+
+```php
+// Application code keeps the business-level queue name.
+GenerateReport::dispatch()->onQueue('reports');
+
+// Infrastructure routing lives in one provider.
+Queue::forward('reports', 'reports.fifo', 'cloud');
+```
+
+Document the forward near the service-provider registration so workers, Horizon, Supervisor, and runbooks follow the final routed queue name.
+
+## Bad practice: treating forwards as a global find-and-replace
+
+A forward is a dispatch-time mapping, not a migration for jobs already sitting on an old queue.[7] Drain the old queue during cutover, then retire old workers instead of running both names indefinitely.[7]
+
+```php
+// Bad: forwarding new jobs but forgetting the old queue still has jobs.
+Queue::forward('reports', 'reports.fifo', 'cloud');
+
+// Keep old workers only long enough to drain the old queue.
+```
+
+Do not use `Queue::forward()` as business logic, throttling, pausing, or retry control. It changes where new jobs are pushed; it does not pause consumption or move jobs that already exist.[7]
+
 ## Log why a queue worker stopped
 
 Laravel 13.30.0 added queue worker stop reasons to `php artisan queue:work` output via framework PR #61339.[5][6] This helps distinguish normal restarts from memory limits, timeouts, lost connections, or deploy-triggered `queue:restart` signals.[5]
@@ -221,6 +294,8 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 
 - `Queue::totalSize()` introduced in: Laravel Framework `v13.31.0`.[1][3]
 - `Queue::totalSize()` PR: `laravel/framework#61373` by Jack Bayliss.[1][2]
+- `Queue::forward()` introduced in: Laravel Framework `v13.26.0`.[7][9]
+- `Queue::forward()` PR: `laravel/framework#61188`.[7][8]
 - Queue worker stop reasons in `queue:work` output introduced in: Laravel Framework `v13.30.0`.[5][6]
 - Worker stop reasons PR: `laravel/framework#61339`.[5][6]
 - If you maintain snippets for older Laravel versions, keep the manual sum as the `Queue::totalSize()` fallback.
@@ -233,3 +308,6 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 [4] Laravel 13.x Queues: Monitoring Your Queues — https://laravel.com/docs/13.x/queues#monitoring-your-queues
 [5] Laravel News: Laravel queue:work Now Prints Why the Worker Stopped — https://laravel-news.com/laravel-queue-worker-stop-reasons
 [6] Laravel Framework PR #61339 — https://github.com/laravel/framework/pull/61339
+[7] Laravel News: Queue::forward(): Reroute Laravel Queues in One Place — https://laravel-news.com/laravel-queue-forward
+[8] Laravel Framework PR #61188 — https://github.com/laravel/framework/pull/61188
+[9] Laravel Framework v13.26.0 release notes — https://github.com/laravel/framework/releases/tag/v13.26.0
