@@ -135,6 +135,10 @@ module.exports = {
 						path: '/php/laravel/pipelines.md',
 					},
 					{
+						title: 'Queues',
+						path: '/php/laravel/queues.md',
+					},
+					{
 						title: 'Policies',
 						path: '/php/laravel/policies.md',
 					},
