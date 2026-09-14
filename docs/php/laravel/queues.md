@@ -122,6 +122,75 @@ if (Queue::totalSize() > 10_000) {
 
 Prefer reporting, alerting, or investigating before clearing or restarting queue infrastructure.
 
+## Dispatch many jobs efficiently with `Bus::bulk()`
+
+Laravel 13.13.0 introduced `Bus::bulk()` via framework PR #60297.[14][15][16] Use it when you need to enqueue many independent jobs efficiently, but do not need `Bus::batch()` progress tracking, callbacks, cancellation, or database batch records.[14][16]
+
+```php
+use App\Jobs\ProcessUser;
+use App\Models\User;
+use Illuminate\Support\Facades\Bus;
+
+$users = User::query()->where('active', true)->get();
+
+Bus::bulk(
+    $users->map(fn (User $user) => new ProcessUser($user))->all(),
+);
+```
+
+`Bus::bulk()` groups jobs by connection and queue, then uses the underlying queue `bulk()` method for each group.[14][16]
+
+```php
+use Illuminate\Support\Facades\Bus;
+
+Bus::bulk([
+    new ProcessReport($reportId),
+    (new SyncCustomer($customerId))->onQueue('high'),
+    (new RebuildSearchIndex($modelId))->onConnection('redis'),
+]);
+```
+
+## Good practice: choose bulk vs batch deliberately
+
+Use `Bus::bulk()` for fire-and-forget mass dispatch where failed jobs can be handled through the normal failed-jobs flow.[16]
+
+```php
+// Good: no progress UI or batch callbacks needed.
+Bus::bulk($jobs);
+```
+
+Keep `Bus::batch()` when the application needs batch lifecycle features.
+
+```php
+use Illuminate\Support\Facades\Bus;
+use Throwable;
+
+Bus::batch($jobs)
+    ->then(fn () => report_import_finished())
+    ->catch(fn (Throwable $e) => report($e))
+    ->finally(fn () => cleanup_import_state())
+    ->dispatch();
+```
+
+## Bad practice: replacing batches when you need lifecycle tracking
+
+Do not replace `Bus::batch()` with `Bus::bulk()` if callers depend on progress, cancellation, callbacks, or batch IDs.
+
+```php
+// Bad: this loses batch progress/callback semantics.
+Bus::bulk($jobs);
+```
+
+Do not build a huge in-memory job array for unbounded datasets. Chunk your source records and call `Bus::bulk()` per chunk.
+
+```php
+User::query()->where('active', true)->chunkById(1_000, function ($users) {
+    Bus::bulk(
+        $users->map(fn (User $user) => new ProcessUser($user))->all(),
+    );
+});
+```
+
 ## Reroute queue names and connections with `Queue::forward()`
 
 Laravel 13.26.0 introduced `Queue::forward()` via framework PR #61188.[7][8][9] Use it when application code dispatches to logical queue names, but a specific environment should send those jobs to a different queue name, connection, or both.[7][8]
@@ -340,6 +409,8 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 
 - `Queue::totalSize()` introduced in: Laravel Framework `v13.31.0`.[1][3]
 - `Queue::totalSize()` PR: `laravel/framework#61373` by Jack Bayliss.[1][2]
+- `Bus::bulk()` introduced in: Laravel Framework `v13.13.0`.[14][15]
+- `Bus::bulk()` PR: `laravel/framework#60297`.[14][16]
 - `Queue::forward()` introduced in: Laravel Framework `v13.26.0`.[7][9]
 - `Queue::forward()` PR: `laravel/framework#61188`.[7][8]
 - `WorkerStopping::$jobsProcessed` and `WorkerStopping::$lastJobProcessedAt` introduced in: Laravel Framework `v13.18.0`.[10][11]
@@ -363,3 +434,6 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 [11] Laravel Framework v13.18.0 release notes — https://github.com/laravel/framework/releases/tag/v13.18.0
 [12] Laravel Framework PR #60592 — https://github.com/laravel/framework/pull/60592
 [13] Laravel Framework PR #60608 — https://github.com/laravel/framework/pull/60608
+[14] Laravel News: Bulk Job Dispatching with Bus::bulk() in Laravel 13.13 — https://laravel-news.com/laravel-13-13-0
+[15] Laravel Framework v13.13.0 release notes — https://github.com/laravel/framework/releases/tag/v13.13.0
+[16] Laravel Framework PR #60297 — https://github.com/laravel/framework/pull/60297
