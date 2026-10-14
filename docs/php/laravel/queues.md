@@ -498,6 +498,20 @@ Event::listen(function (WorkerStopping $event) {
 
 External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event because the worker cannot run its shutdown code.[5]
 
+## Use a percentage memory limit for queue workers
+
+Laravel 13.35.0 allows `queue:work --memory` to accept a percentage of PHP's configured `memory_limit` via framework PR #61753.[21][22][23] This lets a worker follow the memory limit of its container instead of hard-coding a megabyte value.
+
+```bash
+php artisan queue:work redis --memory=60%
+```
+
+With `memory_limit=512M`, a `60%` worker limit is approximately `307MB`.
+
+Set a real PHP `memory_limit` for the worker process. If PHP uses `memory_limit=-1`, a percentage cannot provide a useful safety boundary.[21][23]
+
+Use percentage limits when the same worker image runs with different container sizes; use an explicit megabyte value when you need a fixed, predictable ceiling.
+
 ## Version note
 
 - `Queue::totalSize()` introduced in: Laravel Framework `v13.31.0`.[1][3]
@@ -514,6 +528,8 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 - Worker lifecycle metrics PRs: `laravel/framework#60592` and `laravel/framework#60608`.[12][13]
 - Queue worker stop reasons in `queue:work` output introduced in: Laravel Framework `v13.30.0`.[5][6]
 - Worker stop reasons PR: `laravel/framework#61339`.[5][6]
+- Percentage values for `queue:work --memory` introduced in: Laravel Framework `v13.35.0`.[21][22]
+- Percentage queue worker memory PR: `laravel/framework#61753`.[21][23]
 - If you maintain snippets for older Laravel versions, keep the manual sum as the `Queue::totalSize()` fallback.
 
 ## Sources
@@ -538,3 +554,6 @@ External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event b
 [18] Laravel Framework v13.8.0 release notes — https://github.com/laravel/framework/releases/tag/v13.8.0
 [19] Laravel Framework PR #59997 — https://github.com/laravel/framework/pull/59997
 [20] Laravel Framework PR #59895 — https://github.com/laravel/framework/pull/59895
+[21] Laravel News: Route::query() and Model defaults() in Laravel 13.35 — https://laravel-news.com/laravel-13-35-0
+[22] Laravel Framework v13.35.0 release notes — https://github.com/laravel/framework/releases/tag/v13.35.0
+[23] Laravel Framework PR #61753 — https://github.com/laravel/framework/pull/61753
