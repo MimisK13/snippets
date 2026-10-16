@@ -153,7 +153,11 @@ module.exports = {
 							{
 								title: 'Validation Rules',
 								path: '/php/laravel/validation/validation-rules.md',
-							},							
+							},
+							{
+								title: 'Fluent Rule Builders',
+								path: '/php/laravel/validation/fluent-rule-builders.md',
+							},
 						],						
 					},
 					{
