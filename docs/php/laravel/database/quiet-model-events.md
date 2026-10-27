@@ -1,10 +1,10 @@
-# Quiet Eloquent Model Events
+# Quiet Events
 
 [[TOC]]
 
 Eloquent model events are useful for auditing, cache invalidation, indexing, notifications, and other side effects. Some controlled operations must update a model without dispatching those events. Laravel provides narrowly scoped quiet methods and the broader `withoutEvents()` callback for this purpose.[1][2]
 
-## Use `withoutEvents()` for a block
+## `withoutEvents()`
 
 `withoutEvents()` temporarily disables model events for every model operation executed inside its closure. The closure's return value is returned by `withoutEvents()`.[1][2]
 
@@ -20,7 +20,7 @@ $user = User::withoutEvents(function () {
 
 The scope is the callback, not the whole request or process. Keep the block small so that an unrelated model operation does not accidentally become silent.
 
-## Use a quiet method for one model
+## Quiet methods
 
 For one model instance, prefer the operation-specific method:
 
@@ -45,7 +45,7 @@ $user->pushQuietly();
 
 The Laravel 13.x API also documents quiet increment/decrement operations, including `incrementQuietly()`, `decrementQuietly()`, `incrementEachQuietly()`, and `decrementEachQuietly()`.[2]
 
-## Choosing the scope
+## Which one to use
 
 ```php
 // One instance and one operation: prefer the narrow method.
@@ -60,7 +60,7 @@ User::withoutEvents(function () use ($user) {
 
 Use `withoutEvents()` when all operations in the callback should be silent. Use `saveQuietly()`, `updateQuietly()`, or another operation-specific method when only one operation should bypass events.
 
-## Migration or cleanup example
+## Bulk operations
 
 ```php
 use App\Models\User;
@@ -85,7 +85,7 @@ User::where('status', 'pending')
 
 Remember that mass updates do not dispatch individual model events because the models are not retrieved.[1]
 
-## Good practice
+## Good practices
 
 - Choose the narrowest quiet scope that expresses the intent.
 - Add a comment when bypassing an observer would otherwise be surprising.
@@ -101,7 +101,7 @@ User::withoutEvents(function () use ($user, $attributes): void {
 });
 ```
 
-## Bad practice
+## Bad practices
 
 Do not disable events across unrelated work:
 
@@ -118,7 +118,7 @@ Do not assume `withoutEvents()` disables every possible event in the application
 
 Do not use a quiet operation to hide a required audit trail or to avoid fixing an observer that is incorrectly designed. Make the exception explicit and document the reason.
 
-## Version and API note
+## Version
 
 `withoutEvents()` and `saveQuietly()` are established Eloquent APIs. Laravel 13.x also documents `updateQuietly()`, `deleteQuietly()`, `forceDeleteQuietly()`, `restoreQuietly()`, `replicateQuietly()`, `pushQuietly()`, and quiet increment/decrement methods.[1][2]
 
@@ -126,6 +126,6 @@ Check the framework version used by the application before relying on a particul
 
 ## Sources
 
-[1] Laravel 13.x Eloquent documentation — https://laravel.com/docs/13.x/eloquent#muting-events
-[2] Laravel 13.x Eloquent `Model` API — https://api.laravel.com/docs/13.x/Illuminate/Database/Eloquent/Model.html
-[3] Medium: How to Use `withoutEvents()` in Laravel for Efficient Event Management — https://medium.com/@binumathew1988/how-to-use-withoutevents-in-laravel-for-efficient-event-management-2be1449e9a3e
+- [1] [Laravel 13.x — Muting Events](https://laravel.com/docs/13.x/eloquent#muting-events)
+- [2] [Laravel 13.x API — Eloquent `Model`](https://api.laravel.com/docs/13.x/Illuminate/Database/Eloquent/Model.html)
+- [3] [How to Use `withoutEvents()` in Laravel](https://medium.com/@binumathew1988/how-to-use-withoutevents-in-laravel-for-efficient-event-management-2be1449e9a3e)
