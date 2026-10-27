@@ -11,9 +11,9 @@ $schedule->command('emails:send')
     });
 ```
 
-## Run scheduled tasks on one server by default
+## Single-server tasks
 
-Laravel 13.35.0 adds `Schedule::alwaysOnOneServer()` for multi-server deployments. [Laravel News](https://laravel-news.com/laravel-13-35-0) and [framework PR #61789](https://github.com/laravel/framework/pull/61789) document the change. It applies the `onOneServer()` lock to scheduled tasks without repeating `->onOneServer()` on every task.
+Laravel 13.35.0 adds `Schedule::alwaysOnOneServer()` for multi-server deployments. It applies the `onOneServer()` lock to scheduled tasks without repeating `->onOneServer()` on every task.[1][2]
 
 ```php
 use Illuminate\Console\Scheduling\Schedule;
@@ -22,13 +22,13 @@ use Illuminate\Console\Scheduling\Schedule;
 Schedule::alwaysOnOneServer();
 ```
 
-The servers must share a cache store. Tasks need names for the lock; unnamed closure tasks are skipped.[26]
+The servers must share a cache store. Tasks need names for the lock; unnamed closure tasks are skipped.[2]
 
 **Introduced in:** Laravel Framework `v13.35.0`, PR `laravel/framework#61789`.
 
-## Stop long-running scheduled work safely during deployments
+## Deployment interrupts
 
-Laravel 13.35.0 adds `Schedule::hasBeenInterruptedSince()` so long-running commands can observe `schedule:interrupt` and stop at a safe point. See [Laravel News](https://laravel-news.com/laravel-13-35-0) and [framework PR #61764](https://github.com/laravel/framework/pull/61764).
+Laravel 13.35.0 adds `Schedule::hasBeenInterruptedSince()` so long-running commands can observe `schedule:interrupt` and stop at a safe point.[1][3]
 
 ```php
 use Illuminate\Console\Scheduling\Schedule;
@@ -51,4 +51,8 @@ This is useful during deploys, especially for commands launched with `runInBackg
 
 **Introduced in:** Laravel Framework `v13.35.0`, PR `laravel/framework#61764`.
 
-Sources: [Laravel News — Laravel 13.35.0](https://laravel-news.com/laravel-13-35-0), [framework PR #61789](https://github.com/laravel/framework/pull/61789), [framework PR #61764](https://github.com/laravel/framework/pull/61764).
+## Sources
+
+- [1] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
+- [2] [Laravel Framework PR #61789](https://github.com/laravel/framework/pull/61789)
+- [3] [Laravel Framework PR #61764](https://github.com/laravel/framework/pull/61764)

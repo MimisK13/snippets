@@ -93,8 +93,8 @@ protected $casts = [
 
 
 
-## Links: 
+## Sources
 
-- https://jeffochoa.me/php-enums-best-practices?utm_source=laravelnews&utm_medium=link&utm_campaign=laravelnews
-- https://kongulov.dev/blog/simplifying-data-structures-with-enum-in-laravel#:~:text=ENUMs%20in%20Laravel%20provide%20an,use%20them%20throughout%20your%20application.
-- https://www.itsolutionstuff.com/post/how-to-use-enum-in-laravelexample.html?utm_content=cmp-true
+- [1] [PHP enum best practices](https://jeffochoa.me/php-enums-best-practices)
+- [2] [Enums in Laravel](https://kongulov.dev/blog/simplifying-data-structures-with-enum-in-laravel)
+- [3] [Laravel enum example](https://www.itsolutionstuff.com/post/how-to-use-enum-in-laravelexample.html)

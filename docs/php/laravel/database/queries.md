@@ -24,7 +24,7 @@ $items = Item::select("*")
 dd($items);
 ```
 
-## Group By with Month and Year
+## Group by month/year
 
 ```php
 <?php
@@ -57,7 +57,7 @@ class DemoController extends Controller
 }
 ```
 
-## Get Data Between Two Dates
+## Date range
 
 ### Solution 1
 
@@ -157,7 +157,7 @@ class UserController extends Controller
 }
 ```
 
-## Sum Subscription by current year
+## Current-year subscriptions
 
 ```php
 $subscriptions = Subscription::select('date', 'amount')

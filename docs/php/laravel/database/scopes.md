@@ -5,7 +5,7 @@
 ## Local Scopes
 
 Local scopes allow you to encapsulate common query logic directly within your Laravel Eloquent models. 
-By creating local scopes, you can easily apply specific constraints to your database queries, making your code more readable and maintainable.
+By creating local scopes, you can easily apply specific constraints to your database queries, making your code more readable and maintainable.[1]
 
 ### Examples:
 
@@ -124,7 +124,7 @@ public function scopeSortBy($query, $column, $direction = 'asc')
 $sortedPosts = Post::sortBy('created_at', 'desc')->get();
 ```
 
-## Utilizing Laravel Scope for Security
+## Scopes for security
 
 Laravel Scopes can play a pivotal role in enhancing the security of your application. 
 By controlling data access and permissions, you can bolster your app’s protection against unauthorized access.
@@ -161,7 +161,7 @@ public function scopeAccessibleByRole($query, $role)
 $accessibleResources = Resource::accessibleByRole('admin')->get();
 ```
 
-## Best Practices for Laravel Scope Usage
+## Best practices
 
 To make the most of Laravel Scopes, it’s essential to follow best practices that ensure maintainable and efficient code.
 
@@ -215,8 +215,6 @@ public function testScopePublished()
     $this->assertCount(1, $publishedPosts);
 }
 ```
-
-Source: https://arjunamrutiya.medium.com/mastering-laravel-scope-a-comprehensive-guide-with-code-examples-daa54a4ee633
 
 ## Snippets
 
@@ -301,3 +299,7 @@ protected function popular(Builder $query): void
     $query->where('votes', '>', 100);
 }
 ```
+
+## Sources
+
+- [1] [Laravel scopes guide](https://arjunamrutiya.medium.com/mastering-laravel-scope-a-comprehensive-guide-with-code-examples-daa54a4ee633)

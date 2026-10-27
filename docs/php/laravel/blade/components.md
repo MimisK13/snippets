@@ -2,13 +2,13 @@
 
 [toc]
 
-## Links
+## Sources
 
-- https://jeffochoa.me/efficient-laravel-blade-components-reusability-customization
-- https://jump24.co.uk/journal/laravel-blade-components/
-- https://beyondco.de/blog/blade-components-for-your-layout
-- https://tighten.com/insights/extensible-blade-components/
-- https://dev.to/ericchapman/laravel-blade-components-5c9c
+- [1] [Reusable Blade components](https://jeffochoa.me/efficient-laravel-blade-components-reusability-customization)
+- [2] [Laravel Blade components](https://jump24.co.uk/journal/laravel-blade-components/)
+- [3] [Blade components for layouts](https://beyondco.de/blog/blade-components-for-your-layout)
+- [4] [Extensible Blade components](https://tighten.com/insights/extensible-blade-components/)
+- [5] [Laravel Blade components guide](https://dev.to/ericchapman/laravel-blade-components-5c9c)
 
 ## Spinner
 

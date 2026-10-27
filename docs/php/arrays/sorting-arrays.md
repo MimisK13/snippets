@@ -2,7 +2,7 @@
 
 [[toc]]
 
-## sort() - Sort Array in Ascending Order
+## `sort()` — Ascending
 
 The following example sorts the elements of the $cars array in ascending alphabetical order:
 
@@ -11,7 +11,7 @@ The following example sorts the elements of the $cars array in ascending alphabe
 	sort($cars);
 ```
 
-## rsort() - Sort Array in Descending Order
+## `rsort()` — Descending
 
 The following example sorts the elements of the $cars array in descending alphabetical order:
 
@@ -20,7 +20,7 @@ The following example sorts the elements of the $cars array in descending alphab
 	rsort($cars);
 ```
 
-## asort() - Sort Array (Ascending Order), According to Value
+## `asort()` — Values ascending
 
 The following example sorts an associative array in ascending order, according to the value:
 
@@ -29,7 +29,7 @@ The following example sorts an associative array in ascending order, according t
 	asort($age);
 ```
 
-## ksort() - Sort Array (Ascending Order), According to Key
+## `ksort()` — Keys ascending
 
 The following example sorts an associative array in ascending order, according to the key:
 
@@ -38,7 +38,7 @@ The following example sorts an associative array in ascending order, according t
 	ksort($age);
 ```
 
-## arsort() - Sort Array (Descending Order), According to Value
+## `arsort()` — Values descending
 
 The following example sorts an associative array in descending order, according to the value:
 
@@ -47,7 +47,7 @@ The following example sorts an associative array in descending order, according 
 	arsort($age);
 ```
 
-## krsort() - Sort Array (Descending Order), According to Key
+## `krsort()` — Keys descending
 
 The following example sorts an associative array in descending order, according to the key:
 

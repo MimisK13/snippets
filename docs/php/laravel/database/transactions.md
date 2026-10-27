@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-## Retry a transaction when a deadlock occurs
+## Deadlock retries
 
 Laravel's `DB::transaction()` accepts a second argument named `attempts`. It tells Laravel how many times it should retry the **whole transaction closure** when the database reports a deadlock.
 
@@ -41,7 +41,7 @@ DB::transaction(function () use ($orderId) {
 
 If Laravel still receives deadlocks after all attempts are exhausted, it throws the exception.
 
-## Transfer money safely with retries
+## Safe transfers
 
 Use transactions when several writes must succeed or fail together.
 
@@ -91,7 +91,7 @@ DB::transaction(function () use ($productId, $quantity) {
 }, attempts: 3);
 ```
 
-## Keep external side effects outside the transaction
+## External side effects
 
 Because the whole closure may run again, avoid doing non-idempotent external work inside it:
 
