@@ -1,4 +1,4 @@
-# Eloquent Observers
+# Observers
 
 [[TOC]]
 
@@ -16,7 +16,7 @@ restoring, restored, replicating
 
 Use an observer when a model has several related lifecycle handlers. Keep business workflows that span multiple aggregates in an application service or action instead of hiding them in a large observer.
 
-## Create an observer
+## Create
 
 ```bash
 php artisan make:observer ProductObserver --model=Product
@@ -48,7 +48,7 @@ class ProductObserver
 }
 ```
 
-## Register an observer
+## Registration
 
 Laravel supports the `ObservedBy` attribute on the model:
 
@@ -86,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
 
 Use one registration approach for a given observer. Do not register the same observer through both the attribute and `observe()` unless duplicate handling is intentional and tested.
 
-## Observers and transactions
+## Transactions
 
 If an observer should run only after a surrounding database transaction commits, implement `ShouldHandleEventsAfterCommit`:
 
@@ -107,7 +107,7 @@ class UserObserver implements ShouldHandleEventsAfterCommit
 
 If no transaction is active, the handler executes immediately.[1]
 
-## Important caveats
+## Caveats
 
 Mass update and delete queries do not retrieve models, so their individual model events are not dispatched:
 
@@ -118,9 +118,9 @@ Product::where('archived', true)->update(['status' => 'inactive']);
 
 If observers, casts, accessors, or per-model authorization are required, load and process model instances explicitly. For high-volume jobs, weigh the lifecycle behavior against memory and query costs.
 
-Use the quiet model operations in [Quiet model events](quiet-model-events.md) when the operation is intentionally silent and the scope is explicit.
+Use the operations in [Quiet events](quiet-model-events.md) when the operation is intentionally silent and the scope is explicit.
 
 ## Sources
 
-[1] Laravel 13.x Eloquent documentation — https://laravel.com/docs/13.x/eloquent#events
-[2] Laravel 13.x Eloquent API: `Model` — https://api.laravel.com/docs/13.x/Illuminate/Database/Eloquent/Model.html
+- [1] [Laravel 13.x — Eloquent Events](https://laravel.com/docs/13.x/eloquent#events)
+- [2] [Laravel 13.x API — Eloquent `Model`](https://api.laravel.com/docs/13.x/Illuminate/Database/Eloquent/Model.html)

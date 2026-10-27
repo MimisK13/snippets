@@ -97,11 +97,11 @@ module.exports = {
 								path: '/php/laravel/database/seeders.md',
 							},		
 							{
-								title: 'Observer',
+								title: 'Observers',
 								path: '/php/laravel/database/observer.md',
 							},
 							{
-								title: 'Quiet Model Events',
+								title: 'Quiet Events',
 								path: '/php/laravel/database/quiet-model-events.md',
 							},
 							{
