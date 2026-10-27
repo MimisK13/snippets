@@ -98,8 +98,12 @@ module.exports = {
 							},		
 							{
 								title: 'Observer',
-								path: '/php/laravel/database/observer.md',						
-							},	
+								path: '/php/laravel/database/observer.md',
+							},
+							{
+								title: 'Quiet Model Events',
+								path: '/php/laravel/database/quiet-model-events.md',
+							},
 							{
 								title: 'Relationships',
 								path: '/php/laravel/relationships/',
