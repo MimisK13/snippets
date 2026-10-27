@@ -110,3 +110,33 @@ class Product extends Model
     const UPDATED_AT = 'updated_date';
 }
 ```
+
+## Dynamic model defaults with `defaults()`
+
+Laravel 13.35.0 adds an opt-in `defaults()` method through the `HasDefaultAttributes` trait. See [Laravel News](https://laravel-news.com/laravel-13-35-0) and [framework PR #61813](https://github.com/laravel/framework/pull/61813). Unlike static `$attributes`, the method can derive defaults from configuration, feature flags, or the current date.
+
+```php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasDefaultAttributes;
+use Illuminate\Database\Eloquent\Model;
+
+class Subscription extends Model
+{
+    use HasDefaultAttributes;
+
+    protected function defaults(): array
+    {
+        return [
+            'cancelled' => false,
+            'trial_days' => config('billing.default_trial_days', 14),
+        ];
+    }
+}
+```
+
+The returned values are raw defaults: they take precedence over `$attributes` and skip casts and mutators. Use this trait only on models that intentionally opt into the behavior.
+
+**Introduced in:** Laravel Framework `v13.35.0`, PR `laravel/framework#61813`.
+
+Sources: [Laravel News — Laravel 13.35.0](https://laravel-news.com/laravel-13-35-0), [framework PR #61813](https://github.com/laravel/framework/pull/61813).

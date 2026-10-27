@@ -61,3 +61,20 @@ Auth::routes([
     'verify'   => false, // for email verification
 ]);
 ```
+
+## Register HTTP QUERY routes
+
+Laravel 13.35.0 adds `Route::query()` for the HTTP `QUERY` method. See [Laravel News](https://laravel-news.com/laravel-13-35-0) and [framework PR #61797](https://github.com/laravel/framework/pull/61797). `QUERY` carries a request body for safe, cacheable queries that may need more filter data than a URL query string can comfortably hold.
+
+```php
+use App\Http\Controllers\SearchProductsController;
+use Illuminate\Support\Facades\Route;
+
+Route::query('/products/search', SearchProductsController::class);
+```
+
+A `QUERY` route in the `web` middleware group still follows CSRF protection rules. Treat the body as input and validate it like any other request.
+
+**Introduced in:** Laravel Framework `v13.35.0`, PR `laravel/framework#61797`.
+
+Sources: [Laravel News — Laravel 13.35.0](https://laravel-news.com/laravel-13-35-0), [framework PR #61797](https://github.com/laravel/framework/pull/61797).
