@@ -1,4 +1,4 @@
-# Fluent Validation Rule Builders
+# Fluent Rule Builders
 
 [[TOC]]
 
@@ -50,7 +50,7 @@ Examples include `accepted()`, `bail()`, `boolean()`, `filled()`, `json()`, `nul
 
 `Rule::boolean(true)` produces `boolean:strict`, which accepts only `true` and `false` rather than Laravel's normal boolean-like values.[1]
 
-## Rules with fields or values
+## Fields and values
 
 Pass related fields or accepted values as method arguments instead of embedding them in a comma-separated string:
 
@@ -108,7 +108,7 @@ $request->validate([
 
 The `ip()->version()` builder accepts `4` or `6`. The UUID builder also supports the documented `nil` and `max` variants; invalid versions should be rejected rather than silently converted.[1]
 
-## In a Form Request
+## Form Requests
 
 ```php
 namespace App\Http\Requests;
@@ -200,7 +200,7 @@ Do not assume every builder is an object. Parameterless builders such as `Rule::
 
 Do not remove string rules from an older application solely to adopt this feature. Use builders where they improve clarity, and check the application's minimum Laravel version before using them.
 
-## Version note
+## Version
 
 - Fluent builders for the remaining string-only validation rules introduced in Laravel Framework `v13.36.0`.[1][2]
 - The implementation was contributed in `laravel/framework#61833`.[2]
@@ -208,7 +208,7 @@ Do not remove string rules from an older application solely to adopt this featur
 
 ## Sources
 
-[1] Laravel News: Fluent Rule Builders for All Laravel Validation Rules — https://laravel-news.com/laravel-validation-rule-builders
-[2] Laravel Framework PR #61833 — https://github.com/laravel/framework/pull/61833
-[3] Laravel Framework v13.36.0 release notes — https://github.com/laravel/framework/releases/tag/v13.36.0
-[4] Laravel 13.x Validation documentation — https://laravel.com/docs/13.x/validation
+- [1] [Laravel News — Fluent validation rule builders](https://laravel-news.com/laravel-validation-rule-builders)
+- [2] [Laravel Framework PR #61833](https://github.com/laravel/framework/pull/61833)
+- [3] [Laravel Framework v13.36.0](https://github.com/laravel/framework/releases/tag/v13.36.0)
+- [4] [Laravel 13.x — Validation](https://laravel.com/docs/13.x/validation)

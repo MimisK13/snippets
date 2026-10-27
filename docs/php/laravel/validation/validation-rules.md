@@ -128,7 +128,7 @@
 
 ## MIME Types
 
-## MIME Type By File Extension
+## MIME by extension
 
 ## Min
 
@@ -193,7 +193,7 @@
 'email' => 'unique:users,email_address'
 ```
 
-### Forcing A Unique Rule To Ignore A Given ID:
+### Ignore an ID
 
 ```php
 'email' => [
@@ -207,7 +207,7 @@
 'slug' => ['required', 'max:255', Rule::unique('posts')->ignore($this->post)],
 ```
 
-#### Adding Additional Where Clauses:
+#### Additional `where` clauses
 
 ```php
 'email' => Rule::unique('users')->where(function ($query) {

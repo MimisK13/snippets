@@ -1,4 +1,4 @@
-# Laravel Sanctum Auth με Next.js (Combined Guide)
+# Laravel Sanctum με Next.js
 
 Αυτός ο οδηγός ενοποιεί το auth flow για Laravel Sanctum + Next.js για το setup:
 
@@ -6,7 +6,7 @@
 - Frontend: Next.js (`http://web.audio-visual-core.test`)
 - Auth mode: Sanctum session/cookie auth (SPA)
 
-## 1. Core αρχή: same-site setup
+## 1. Same-site setup
 
 Για local `http`, CSRF + session cookies δουλεύουν σωστά όταν frontend και backend ανήκουν στο ίδιο top-level domain.
 
@@ -84,7 +84,7 @@ Auth endpoints:
 
 ## 4. Frontend setup (Next.js)
 
-### 4.1 Herd proxy (recommended for local domain)
+### 4.1 Herd proxy
 
 ```bash
 herd proxy web.audio-visual-core http://127.0.0.1:3000
@@ -100,7 +100,7 @@ herd proxy web.audio-visual-core http://127.0.0.1:3000
 NEXT_PUBLIC_API_BASE_URL=http://audio-visual-core.test
 ```
 
-### 4.3 Next config (`next.config.ts`)
+### 4.3 Next config
 
 ```ts
 import type { NextConfig } from "next";
@@ -135,7 +135,7 @@ export const api = axios.create({
 });
 ```
 
-### 5.2 Fetch variant (normalize base URL)
+### 5.2 Fetch variant
 
 ```ts
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
@@ -184,7 +184,7 @@ export async function logout() {
 
 Αν χρησιμοποιείς `fetch`, για non-GET requests πρόσθεσε `X-XSRF-TOKEN` από το `XSRF-TOKEN` cookie.
 
-## 7. UI usage παράδειγμα (client component)
+## 7. UI example
 
 ```tsx
 "use client";
@@ -233,12 +233,12 @@ export default function AuthDemo() {
 }
 ```
 
-## 8. Route protection pattern (Next.js)
+## 8. Route protection
 
 - Σε protected routes/layout: κάλεσε `getMe()`, και σε fail κάνε redirect σε `/login`.
 - Στο login page: αν `getMe()` πετύχει, redirect σε `/dashboard`.
 
-## 9. Client-side vs server-side requests
+## 9. Client vs server requests
 
 Για Sanctum session auth, τα requests πρέπει να γίνονται από browser context (`client-side`) ώστε cookies/CSRF να λειτουργούν φυσικά.
 

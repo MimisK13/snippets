@@ -1,4 +1,4 @@
-# Blade Authorization Directives for View Security
+# Blade Authorization
 
 Laravel's Blade authorization directives integrate seamlessly with your application's 
 permission system, enabling clean conditional rendering based on user capabilities. 
@@ -125,6 +125,8 @@ Here's a comprehensive dashboard implementation showcasing various authorization
 </div>
 ```
 
-Authorization directives ensure that UI elements align with user permissions, creating secure and intuitive interfaces while reducing the risk of exposing unauthorized functionality.
+Authorization directives ensure that UI elements align with user permissions, creating secure and intuitive interfaces while reducing the risk of exposing unauthorized functionality.[1]
 
-[source](https://laravel-news.com/blade-authorization-can-cannot)
+## Sources
+
+- [1] [Laravel News — Blade authorization](https://laravel-news.com/blade-authorization-can-cannot)

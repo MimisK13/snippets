@@ -13,7 +13,7 @@
 
 ## Usage examples
 
-### Model-based policy (multiple abilities)
+### Multiple abilities
 
 ```php
 @canany(['update', 'publish'], $post)

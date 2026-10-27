@@ -111,9 +111,9 @@ class Product extends Model
 }
 ```
 
-## Dynamic model defaults with `defaults()`
+## `defaults()`
 
-Laravel 13.35.0 adds an opt-in `defaults()` method through the `HasDefaultAttributes` trait. See [Laravel News](https://laravel-news.com/laravel-13-35-0) and [framework PR #61813](https://github.com/laravel/framework/pull/61813). Unlike static `$attributes`, the method can derive defaults from configuration, feature flags, or the current date.
+Laravel 13.35.0 adds an opt-in `defaults()` method through the `HasDefaultAttributes` trait. Unlike static `$attributes`, the method can derive defaults from configuration, feature flags, or the current date.[1][2]
 
 ```php
 namespace App\Models;
@@ -139,4 +139,7 @@ The returned values are raw defaults: they take precedence over `$attributes` an
 
 **Introduced in:** Laravel Framework `v13.35.0`, PR `laravel/framework#61813`.
 
-Sources: [Laravel News — Laravel 13.35.0](https://laravel-news.com/laravel-13-35-0), [framework PR #61813](https://github.com/laravel/framework/pull/61813).
+## Sources
+
+- [1] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
+- [2] [Laravel Framework PR #61813](https://github.com/laravel/framework/pull/61813)

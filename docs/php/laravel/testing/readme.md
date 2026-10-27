@@ -45,9 +45,9 @@ public function setUp(): void
 }
 ```
 
-## Assert fake job properties with arrays
+## Fake job properties
 
-Laravel 13.35.0 allows Queue, Bus, Event, and Notification fake assertions to accept expected property arrays instead of callbacks. [Laravel News](https://laravel-news.com/laravel-13-35-0) and [framework PR #61770](https://github.com/laravel/framework/pull/61770) document the change. Public properties are compared strictly, while Eloquent models are compared using `is()`.
+Laravel 13.35.0 allows Queue, Bus, Event, and Notification fake assertions to accept expected property arrays instead of callbacks. Public properties are compared strictly, while Eloquent models are compared using `is()`.[1][2]
 
 ```php
 use Illuminate\Support\Facades\Queue;
@@ -63,4 +63,7 @@ Use the callback form when the assertion needs computed logic or private state; 
 
 **Introduced in:** Laravel Framework `v13.35.0`, PR `laravel/framework#61770`.
 
-Sources: [Laravel News — Laravel 13.35.0](https://laravel-news.com/laravel-13-35-0), [framework PR #61770](https://github.com/laravel/framework/pull/61770).
+## Sources
+
+- [1] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
+- [2] [Laravel Framework PR #61770](https://github.com/laravel/framework/pull/61770)

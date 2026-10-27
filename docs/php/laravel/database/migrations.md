@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-## Create a new migration file
+## Create a migration
 
 ```bash
 php artisan make:migration create_products_table

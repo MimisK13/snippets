@@ -4,7 +4,7 @@
 
 ## Paginate
 
-### Return to same page after Delete 
+### Redirect after delete
 
 ```php
 // Controller

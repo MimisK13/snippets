@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-## What is a Laravel Pipeline?
+## Laravel Pipelines
 
 Laravel's `Pipeline` facade lets you send one value through a list of closures, callables, or classes. Each pipe receives the current value and a `$next` closure. When the pipe calls `$next($value)`, Laravel passes the value to the next pipe.[1]
 
@@ -191,7 +191,7 @@ class SearchFilter
 }
 ```
 
-## Good: keep query filters lazy
+## Good: Lazy filters
 
 Send an Eloquent `Builder` through the pipeline, not an already-loaded collection. This keeps filtering in SQL and lets pagination work correctly.
 
@@ -261,7 +261,7 @@ class ValidateCart
 }
 ```
 
-## Using a custom pipe method with `via()`
+## Custom methods with `via()`
 
 By default, Laravel calls `handle` on pipe classes. If you prefer domain-specific method names, use `via()`.[2]
 
@@ -312,7 +312,7 @@ class ActiveUsers
 
 ## Bad practices
 
-### Bad: pipeline for two trivial lines
+### Bad: Trivial pipelines
 
 ```php
 // Over-engineered.
@@ -378,7 +378,7 @@ class ApplyDiscount
 }
 ```
 
-### Bad: hiding important side effects
+### Bad: Hidden side effects
 
 ```php
 class SendWelcomeEmail
@@ -406,9 +406,9 @@ Avoid pipelines when:
 
 ## Sources
 
-[1] https://laravel.com/docs/12.x/helpers — Laravel 12.x Helpers - Pipeline
-[2] https://api.laravel.com/docs/12.x/Illuminate/Pipeline/Pipeline.html — Illuminate\Pipeline\Pipeline API
-[3] https://www.honeybadger.io/blog/laravel-pipeline — A guide to Laravel pipelines - Honeybadger
-[4] https://kirschbaumdevelopment.com/insights/build-sequences-with-laravel-pipelines — How to build sequences with Laravel pipelines - Kirschbaum
-[5] https://www.amitmerchant.com/the-pipeline-helper-in-laravel — The pipeline helper in Laravel - Amit Merchant
-[6] https://martinjoo.dev/how-to-use-laravel-pipelines-to-implement-more-advanced-filters — Advanced filters with Laravel pipelines - Martin Joo
+- [1] [Laravel 12.x — Pipeline helper](https://laravel.com/docs/12.x/helpers)
+- [2] [Laravel 12.x API — `Pipeline`](https://api.laravel.com/docs/12.x/Illuminate/Pipeline/Pipeline.html)
+- [3] [Honeybadger — A guide to Laravel pipelines](https://www.honeybadger.io/blog/laravel-pipeline)
+- [4] [Kirschbaum — Build sequences with Laravel pipelines](https://kirschbaumdevelopment.com/insights/build-sequences-with-laravel-pipelines)
+- [5] [Amit Merchant — The pipeline helper](https://www.amitmerchant.com/the-pipeline-helper-in-laravel)
+- [6] [Martin Joo — Advanced pipeline filters](https://martinjoo.dev/how-to-use-laravel-pipelines-to-implement-more-advanced-filters)

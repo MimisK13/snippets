@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-## Count every queued job on a connection
+## Total size
 
 Laravel 13.31.0 introduced `Queue::totalSize()` via framework PR #61373.[1][2] Use it when you want a single number for the total jobs currently on a queue connection, instead of manually adding pending, delayed, and reserved counts.[2][3]
 
@@ -24,7 +24,7 @@ $totalJobs = Queue::totalPendingSize()
 
 The original PR describes this as answering: "how many total jobs do I have in my X connection right now?"[2]
 
-## Use it for lightweight queue health checks
+## Health checks
 
 `Queue::totalSize()` is useful for dashboards, deploy smoke checks, or operational alerts where you need one backlog number.
 
@@ -46,7 +46,7 @@ Schedule::command('queue:monitor redis:default,redis:mail --max=100')
     ->everyMinute();
 ```
 
-## Check support before relying on it everywhere
+## Driver support
 
 The PR notes that `totalSize()` is intended for the Database, Redis, Cloud queue connections, and the queue fake.[2] Be careful with drivers where the total is not meaningful or may be approximate.
 
@@ -59,7 +59,7 @@ $totalJobs = Queue::totalSize();
 // Do not use this alone as a billing, SLA, or exact audit metric.
 ```
 
-## Good practice
+## Good practices
 
 Use `Queue::totalSize()` when you need a high-level backlog number.
 
@@ -89,7 +89,7 @@ return [
 
 Use `queue:monitor` or Horizon for alerting and operational monitoring instead of building all queue supervision around one ad-hoc controller endpoint.[4]
 
-## Bad practice
+## Bad practices
 
 Do not keep manually summing the three total methods when your app runs on Laravel 13.31.0 or newer.
 
@@ -122,7 +122,7 @@ if (Queue::totalSize() > 10_000) {
 
 Prefer reporting, alerting, or investigating before clearing or restarting queue infrastructure.
 
-## Inspect jobs across every queue
+## Queue-wide inspection
 
 Laravel 13.8.0 introduced queue-wide inspection methods via framework PR #59997.[17][18][19] Use them when you need pending, delayed, or reserved jobs across all queues on a connection without manually merging per-queue results.[17][19]
 
@@ -159,7 +159,7 @@ Queue::allReservedJobs()->each(function ($job) {
 });
 ```
 
-## Good practice: deployment safety checks
+## Deployment safety
 
 Use `allReservedJobs()` before stopping workers during deploys when you need to avoid killing active jobs.[17][19]
 
@@ -171,7 +171,7 @@ if (Queue::allReservedJobs()->isNotEmpty()) {
 }
 ```
 
-## Bad practice: treating inspection as a queue dashboard replacement
+## Monitoring limits
 
 Do not poll these methods aggressively from public endpoints. They can inspect every queue and may be expensive on large installations.
 
@@ -186,7 +186,7 @@ Route::get('/queue/jobs', fn () => [
 
 Prefer internal tooling, scheduled checks, logs, or a proper queue dashboard for continuous monitoring.
 
-## Dispatch many jobs efficiently with `Bus::bulk()`
+## `Bus::bulk()`
 
 Laravel 13.13.0 introduced `Bus::bulk()` via framework PR #60297.[14][15][16] Use it when you need to enqueue many independent jobs efficiently, but do not need `Bus::batch()` progress tracking, callbacks, cancellation, or database batch records.[14][16]
 
@@ -214,7 +214,7 @@ Bus::bulk([
 ]);
 ```
 
-## Good practice: choose bulk vs batch deliberately
+## Bulk vs batch
 
 Use `Bus::bulk()` for fire-and-forget mass dispatch where failed jobs can be handled through the normal failed-jobs flow.[16]
 
@@ -236,7 +236,7 @@ Bus::batch($jobs)
     ->dispatch();
 ```
 
-## Bad practice: replacing batches when you need lifecycle tracking
+## Batch lifecycle
 
 Do not replace `Bus::batch()` with `Bus::bulk()` if callers depend on progress, cancellation, callbacks, or batch IDs.
 
@@ -255,7 +255,7 @@ User::query()->where('active', true)->chunkById(1_000, function ($users) {
 });
 ```
 
-## Reroute queue names and connections with `Queue::forward()`
+## `Queue::forward()`
 
 Laravel 13.26.0 introduced `Queue::forward()` via framework PR #61188.[7][8][9] Use it when application code dispatches to logical queue names, but a specific environment should send those jobs to a different queue name, connection, or both.[7][8]
 
@@ -301,7 +301,7 @@ Queue::forward([
 
 This is useful when production uses different queue infrastructure than local or staging environments. For example, local code can keep dispatching to `reports`, while production forwards that logical queue to `reports.fifo` on a managed queue connection.[7][8]
 
-## Good practice: centralized queue routing
+## Centralized routing
 
 Keep stable logical queue names in jobs and dispatch sites, then forward them at the infrastructure boundary.
 
@@ -315,7 +315,7 @@ Queue::forward('reports', 'reports.fifo', 'cloud');
 
 Document the forward near the service-provider registration so workers, Horizon, Supervisor, and runbooks follow the final routed queue name.
 
-## Bad practice: treating forwards as a global find-and-replace
+## Forwarding limits
 
 A forward is a dispatch-time mapping, not a migration for jobs already sitting on an old queue.[7] Drain the old queue during cutover, then retire old workers instead of running both names indefinitely.[7]
 
@@ -328,7 +328,7 @@ Queue::forward('reports', 'reports.fifo', 'cloud');
 
 Do not use `Queue::forward()` as business logic, throttling, pausing, or retry control. It changes where new jobs are pushed; it does not pause consumption or move jobs that already exist.[7]
 
-## Log worker pause and resume signals
+## Pause and resume
 
 Laravel 13.8.0 introduced `WorkerPausing` and `WorkerResuming` events via framework PR #59895.[17][18][20] These events are dispatched when a queue worker receives `SIGUSR2` to pause or `SIGCONT` to resume.[17][20]
 
@@ -357,7 +357,7 @@ Use these for deployment observability when workers are paused/resumed by infras
 
 Do not use these events to infer that jobs completed successfully. They describe worker state transitions, not job outcomes.
 
-## Track worker lifecycle metrics with `WorkerStopping`
+## `WorkerStopping`
 
 Laravel 13.18.0 added `jobsProcessed` and `lastJobProcessedAt` to the `WorkerStopping` event via framework PRs #60592 and #60608.[10][11][12][13] Use these fields to log worker throughput when a daemon exits, without reconstructing the lifecycle from individual job events.[10][12]
 
@@ -384,7 +384,7 @@ Event::listen(function (WorkerStopping $event) {
 });
 ```
 
-## Good practice: worker lifecycle metrics
+## Lifecycle metrics
 
 Use these fields to tune worker options such as `--max-time`, `--max-jobs`, memory limits, and process-manager restart behavior.[12]
 
@@ -403,7 +403,7 @@ Event::listen(function (WorkerStopping $event) {
 
 Do not treat `lastJobProcessedAt` as an application timestamp. It is a worker runtime timestamp meant for lifecycle/telemetry use.
 
-## Log why a queue worker stopped
+## Stop reasons
 
 Laravel 13.30.0 added queue worker stop reasons to `php artisan queue:work` output via framework PR #61339.[5][6] This helps distinguish normal restarts from memory limits, timeouts, lost connections, or deploy-triggered `queue:restart` signals.[5]
 
@@ -453,7 +453,7 @@ Event::listen(function (WorkerStopping $event) {
 
 Known stop reasons include `empty`, `empty_for`, `max_jobs`, `max_time`, `restart_signal`, `interrupted`, `lost_connection`, `memory`, and `timed_out`.[5]
 
-## Good practice: worker stop observability
+## Stop observability
 
 Log or metric the `reason` field when workers are managed by Supervisor, systemd, containers, or deploy scripts.
 
@@ -472,7 +472,7 @@ Use `--json` when your process manager already captures stdout and you want log 
 php artisan queue:work redis --queue=default --json
 ```
 
-## Bad practice: treating every stop as a crash
+## Stop handling
 
 Do not page the team for every worker stop. Some reasons are expected and exit with code `0`, such as `max_jobs`, `max_time`, `empty`, or `restart_signal`.[5]
 
@@ -498,7 +498,7 @@ Event::listen(function (WorkerStopping $event) {
 
 External kills, such as an OOM killer or `SIGKILL`, may not dispatch the event because the worker cannot run its shutdown code.[5]
 
-## Use a percentage memory limit for queue workers
+## Memory limits
 
 Laravel 13.35.0 allows `queue:work --memory` to accept a percentage of PHP's configured `memory_limit` via framework PR #61753.[21][22][23] This lets a worker follow the memory limit of its container instead of hard-coding a megabyte value.
 
@@ -512,7 +512,7 @@ Set a real PHP `memory_limit` for the worker process. If PHP uses `memory_limit=
 
 Use percentage limits when the same worker image runs with different container sizes; use an explicit megabyte value when you need a fixed, predictable ceiling.
 
-## Version note
+## Version
 
 - `Queue::totalSize()` introduced in: Laravel Framework `v13.31.0`.[1][3]
 - `Queue::totalSize()` PR: `laravel/framework#61373` by Jack Bayliss.[1][2]
@@ -534,26 +534,26 @@ Use percentage limits when the same worker image runs with different container s
 
 ## Sources
 
-[1] Laravel Framework v13.31.0 release notes — https://github.com/laravel/framework/releases/tag/v13.31.0
-[2] Laravel Framework PR #61373 — https://github.com/laravel/framework/pull/61373
-[3] Laravel News: Queue totalSize() and JobInterrupted Event in Laravel 13.31 — https://laravel-news.com/laravel-13-31-0
-[4] Laravel 13.x Queues: Monitoring Your Queues — https://laravel.com/docs/13.x/queues#monitoring-your-queues
-[5] Laravel News: Laravel queue:work Now Prints Why the Worker Stopped — https://laravel-news.com/laravel-queue-worker-stop-reasons
-[6] Laravel Framework PR #61339 — https://github.com/laravel/framework/pull/61339
-[7] Laravel News: Queue::forward(): Reroute Laravel Queues in One Place — https://laravel-news.com/laravel-queue-forward
-[8] Laravel Framework PR #61188 — https://github.com/laravel/framework/pull/61188
-[9] Laravel Framework v13.26.0 release notes — https://github.com/laravel/framework/releases/tag/v13.26.0
-[10] Laravel News: Worker Metrics on the WorkerStopping Event in Laravel 13.18 — https://laravel-news.com/laravel-13-18-0
-[11] Laravel Framework v13.18.0 release notes — https://github.com/laravel/framework/releases/tag/v13.18.0
-[12] Laravel Framework PR #60592 — https://github.com/laravel/framework/pull/60592
-[13] Laravel Framework PR #60608 — https://github.com/laravel/framework/pull/60608
-[14] Laravel News: Bulk Job Dispatching with Bus::bulk() in Laravel 13.13 — https://laravel-news.com/laravel-13-13-0
-[15] Laravel Framework v13.13.0 release notes — https://github.com/laravel/framework/releases/tag/v13.13.0
-[16] Laravel Framework PR #60297 — https://github.com/laravel/framework/pull/60297
-[17] Laravel News: Queue-Wide Inspection Methods in Laravel 13.8.0 — https://laravel-news.com/laravel-13-8-0
-[18] Laravel Framework v13.8.0 release notes — https://github.com/laravel/framework/releases/tag/v13.8.0
-[19] Laravel Framework PR #59997 — https://github.com/laravel/framework/pull/59997
-[20] Laravel Framework PR #59895 — https://github.com/laravel/framework/pull/59895
-[21] Laravel News: Route::query() and Model defaults() in Laravel 13.35 — https://laravel-news.com/laravel-13-35-0
-[22] Laravel Framework v13.35.0 release notes — https://github.com/laravel/framework/releases/tag/v13.35.0
-[23] Laravel Framework PR #61753 — https://github.com/laravel/framework/pull/61753
+- [1] [Laravel Framework v13.31.0](https://github.com/laravel/framework/releases/tag/v13.31.0)
+- [2] [Laravel Framework PR #61373](https://github.com/laravel/framework/pull/61373)
+- [3] [Laravel News — Queue `totalSize()`](https://laravel-news.com/laravel-13-31-0)
+- [4] [Laravel 13.x — Monitoring Queues](https://laravel.com/docs/13.x/queues#monitoring-your-queues)
+- [5] [Laravel News — Worker stop reasons](https://laravel-news.com/laravel-queue-worker-stop-reasons)
+- [6] [Laravel Framework PR #61339](https://github.com/laravel/framework/pull/61339)
+- [7] [Laravel News — `Queue::forward()`](https://laravel-news.com/laravel-queue-forward)
+- [8] [Laravel Framework PR #61188](https://github.com/laravel/framework/pull/61188)
+- [9] [Laravel Framework v13.26.0](https://github.com/laravel/framework/releases/tag/v13.26.0)
+- [10] [Laravel News — `WorkerStopping` metrics](https://laravel-news.com/laravel-13-18-0)
+- [11] [Laravel Framework v13.18.0](https://github.com/laravel/framework/releases/tag/v13.18.0)
+- [12] [Laravel Framework PR #60592](https://github.com/laravel/framework/pull/60592)
+- [13] [Laravel Framework PR #60608](https://github.com/laravel/framework/pull/60608)
+- [14] [Laravel News — `Bus::bulk()`](https://laravel-news.com/laravel-13-13-0)
+- [15] [Laravel Framework v13.13.0](https://github.com/laravel/framework/releases/tag/v13.13.0)
+- [16] [Laravel Framework PR #60297](https://github.com/laravel/framework/pull/60297)
+- [17] [Laravel News — Queue-wide inspection](https://laravel-news.com/laravel-13-8-0)
+- [18] [Laravel Framework v13.8.0](https://github.com/laravel/framework/releases/tag/v13.8.0)
+- [19] [Laravel Framework PR #59997](https://github.com/laravel/framework/pull/59997)
+- [20] [Laravel Framework PR #59895](https://github.com/laravel/framework/pull/59895)
+- [21] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
+- [22] [Laravel Framework v13.35.0](https://github.com/laravel/framework/releases/tag/v13.35.0)
+- [23] [Laravel Framework PR #61753](https://github.com/laravel/framework/pull/61753)

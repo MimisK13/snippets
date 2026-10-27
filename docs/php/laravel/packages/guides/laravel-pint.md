@@ -114,8 +114,8 @@ composer require laravel/pint --dev
 }
 ```
 
-## Links
+## Sources
 
-- [docs](https://laravel.com/docs/13.x/pint)
-- [cs.symfony.com](https://cs.symfony.com/)
-- [All about Laravel code style fixer - Laravel Pint](https://medium.com/@ssbhattarai/all-about-laravel-php-code-style-fixer-laravel-pint-adcbe3ac4be4)
+- [1] [Laravel 13.x — Pint](https://laravel.com/docs/13.x/pint)
+- [2] [PHP CS Fixer](https://cs.symfony.com/)
+- [3] [Laravel Pint guide](https://medium.com/@ssbhattarai/all-about-laravel-php-code-style-fixer-laravel-pint-adcbe3ac4be4)

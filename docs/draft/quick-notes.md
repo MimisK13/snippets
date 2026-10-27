@@ -2,7 +2,7 @@
 
 [[TOC]]
 
-## whereAttachedTo() - Laravel 12.x
+## `whereAttachedTo()`
 
 [Original PR](https://github.com/laravel/framework/pull/55245)
 
