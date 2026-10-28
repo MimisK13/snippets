@@ -108,6 +108,37 @@ $request->validate([
 
 The `ip()->version()` builder accepts `4` or `6`. The UUID builder also supports the documented `nil` and `max` variants; invalid versions should be rejected rather than silently converted.[1]
 
+## Array sizes
+
+Laravel 13.39.0 adds `min()`, `max()`, `between()`, and `exactly()` to `Rule::array()`.[5][6]
+
+```php
+use Illuminate\Validation\Rule;
+
+$request->validate([
+    'photos' => [
+        Rule::required(),
+        Rule::array()->min(1)->max(10),
+    ],
+    'coordinates' => [
+        Rule::array()->exactly(2),
+    ],
+    'tags' => [
+        Rule::array()->between(1, 5),
+    ],
+]);
+```
+
+The methods can be combined with allowed keys:
+
+```php
+'profile' => [
+    Rule::array(['name', 'email'])->min(1),
+],
+```
+
+The fluent form replaces separate size strings such as `'min:1'` while producing the same validation rules.[5][6]
+
 ## Form Requests
 
 ```php
@@ -204,6 +235,7 @@ Do not remove string rules from an older application solely to adopt this featur
 
 - Fluent builders for the remaining string-only validation rules introduced in Laravel Framework `v13.36.0`.[1][2]
 - The implementation was contributed in `laravel/framework#61833`.[2]
+- Array size methods introduced in Laravel Framework `v13.39.0`, PR `laravel/framework#62179`.[5][6]
 - Existing string validation syntax remains supported.[1]
 
 ## Sources
@@ -212,3 +244,5 @@ Do not remove string rules from an older application solely to adopt this featur
 - [2] [Laravel Framework PR #61833](https://github.com/laravel/framework/pull/61833)
 - [3] [Laravel Framework v13.36.0](https://github.com/laravel/framework/releases/tag/v13.36.0)
 - [4] [Laravel 13.x — Validation](https://laravel.com/docs/13.x/validation)
+- [5] [Laravel Framework v13.39.0](https://github.com/laravel/framework/releases/tag/v13.39.0)
+- [6] [Laravel Framework PR #62179](https://github.com/laravel/framework/pull/62179)
