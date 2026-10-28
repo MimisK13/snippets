@@ -512,6 +512,47 @@ Set a real PHP `memory_limit` for the worker process. If PHP uses `memory_limit=
 
 Use percentage limits when the same worker image runs with different container sizes; use an explicit megabyte value when you need a fixed, predictable ceiling.
 
+## Failed jobs
+
+Laravel 13.37.0 adds queue filtering to `queue:failed` and lets `queue:forget` remove several failed-job IDs in one command.[24][25][26]
+
+```bash
+# Show failures from one queue.
+php artisan queue:failed --queue=emails
+
+# Combine filtering with machine-readable output.
+php artisan queue:failed --queue=emails --json
+
+# Remove several failed jobs.
+php artisan queue:forget 10 11 12
+```
+
+`queue:forget` continues through all supplied IDs. If any ID is missing, the command reports it and exits with failure after processing the remaining IDs.[26]
+
+Use `queue:failed --queue` before retrying or deleting failures after a queue-specific outage. Do not use `queue:flush` when failures from unrelated queues must remain available.
+
+## Attempt duration
+
+Laravel 13.39.0 adds a millisecond `duration` value to `JobAttempted`. Unlike `JobProcessed`, this event also describes attempts that failed or were released for retry.[27][28][29]
+
+```php
+use Illuminate\Queue\Events\JobAttempted;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
+
+Event::listen(function (JobAttempted $event): void {
+    Log::info('Queue attempt finished', [
+        'connection' => $event->connectionName,
+        'job' => $event->job->resolveName(),
+        'successful' => $event->successful(),
+        'duration_ms' => $event->duration,
+        'exception' => $event->exception?->getMessage(),
+    ]);
+});
+```
+
+The sync queue now reports the same duration. Treat `duration` as nullable for compatibility with manually constructed events or integrations that have not populated it.[28][29]
+
 ## Version
 
 - `Queue::totalSize()` introduced in: Laravel Framework `v13.31.0`.[1][3]
@@ -530,6 +571,8 @@ Use percentage limits when the same worker image runs with different container s
 - Worker stop reasons PR: `laravel/framework#61339`.[5][6]
 - Percentage values for `queue:work --memory` introduced in: Laravel Framework `v13.35.0`.[21][22]
 - Percentage queue worker memory PR: `laravel/framework#61753`.[21][23]
+- `queue:failed --queue` and multi-ID `queue:forget` introduced in Laravel Framework `v13.37.0`.[24][25][26]
+- `JobAttempted::$duration` introduced in Laravel Framework `v13.39.0`; sync-queue support followed in PR `#62155`.[27][28][29]
 - If you maintain snippets for older Laravel versions, keep the manual sum as the `Queue::totalSize()` fallback.
 
 ## Sources
@@ -557,3 +600,9 @@ Use percentage limits when the same worker image runs with different container s
 - [21] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
 - [22] [Laravel Framework v13.35.0](https://github.com/laravel/framework/releases/tag/v13.35.0)
 - [23] [Laravel Framework PR #61753](https://github.com/laravel/framework/pull/61753)
+- [24] [Laravel Framework v13.37.0](https://github.com/laravel/framework/releases/tag/v13.37.0)
+- [25] [Laravel Framework PR #61971](https://github.com/laravel/framework/pull/61971)
+- [26] [Laravel Framework PR #61901](https://github.com/laravel/framework/pull/61901)
+- [27] [Laravel Framework v13.39.0](https://github.com/laravel/framework/releases/tag/v13.39.0)
+- [28] [Laravel Framework PR #62118](https://github.com/laravel/framework/pull/62118)
+- [29] [Laravel Framework PR #62155](https://github.com/laravel/framework/pull/62155)

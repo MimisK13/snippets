@@ -81,6 +81,10 @@ module.exports = {
 								path: '/php/laravel/database/queries.md',
 							},
 							{
+								title: 'Read Replicas',
+								path: '/php/laravel/database/read-replicas.md',
+							},
+							{
 								title: 'Transactions',
 								path: '/php/laravel/database/transactions.md',
 							},

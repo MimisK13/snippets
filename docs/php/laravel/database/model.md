@@ -139,7 +139,40 @@ The returned values are raw defaults: they take precedence over `$attributes` an
 
 **Introduced in:** Laravel Framework `v13.35.0`, PR `laravel/framework#61813`.
 
+## Keyless models
+
+Laravel 13.39.0 allows `key: false` on the `#[Table]` attribute. This disables the default `id` primary key and automatically marks the model as non-incrementing.[3][4][5]
+
+```php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Model;
+
+#[Table(name: 'activity_log', key: false)]
+class Activity extends Model
+{
+    public $timestamps = false;
+
+    protected $guarded = [];
+}
+```
+
+The model can insert rows without defining `protected $primaryKey = null` or manually setting `$incrementing = false`:
+
+```php
+Activity::create([
+    'event' => 'login',
+    'payload' => json_encode(['user_id' => $user->id]),
+]);
+```
+
+Use keyless models for append-only logs, staging tables, database views, or legacy tables that genuinely have no unique key. Operations that need model identity—such as instance updates, deletes, `refresh()`, route-model binding, and some relationships—still require a stable key and should not be assumed to work safely.
+
 ## Sources
 
 - [1] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
 - [2] [Laravel Framework PR #61813](https://github.com/laravel/framework/pull/61813)
+- [3] [Laravel Framework v13.39.0](https://github.com/laravel/framework/releases/tag/v13.39.0)
+- [4] [Laravel Framework PR #62113](https://github.com/laravel/framework/pull/62113)
+- [5] [Laravel Framework PR #62205](https://github.com/laravel/framework/pull/62205)
