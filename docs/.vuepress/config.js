@@ -287,6 +287,16 @@ module.exports = {
 				]
 			},
 			{
+				title: 'Inertia',
+				initialOpenGroupIndex: -1,
+				children: [
+					{
+						title: 'Live Props',
+						path: '/inertia/live-props.md',
+					},
+				]
+			},
+			{
 				title: 'Livewire',
 				initialOpenGroupIndex: -1,
 				children: [
