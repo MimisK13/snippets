@@ -139,6 +139,14 @@ module.exports = {
 						path: '/php/laravel/controller.md',						
 					},
 					{
+						title: 'Request Input',
+						path: '/php/laravel/request-input.md',
+					},
+					{
+						title: 'Middleware',
+						path: '/php/laravel/middleware.md',
+					},
+					{
 						title: 'Pipelines',
 						path: '/php/laravel/pipelines.md',
 					},
