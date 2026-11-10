@@ -239,6 +239,155 @@ Every subscriber to the channel receives the same payload. Only broadcast values
 
 Prefer API resources over models because broadcasting a model exposes every attribute not hidden by the model.[1]
 
+## Reverb demo
+
+A complete real-time example uses Laravel Reverb, a queued broadcast event, and an Inertia page. Install broadcasting with Reverb:[1][3]
+
+```bash
+php artisan install:broadcasting --reverb
+```
+
+This creates `routes/channels.php` and adds Reverb environment variables. For Vue and React apps, the installer also installs the matching Echo package and adds `configureEcho()` to `resources/js/app.ts` or `app.tsx`. In a Svelte app, install `@laravel/echo-svelte` and add the same `configureEcho()` call manually.[1]
+
+Start the Reverb server and a queue worker:
+
+```bash
+php artisan reverb:start
+php artisan queue:work
+```
+
+Events implementing `ShouldBroadcast` are queued. Implement `ShouldBroadcastNow` instead when the broadcast must happen during the request.[1]
+
+Create the event:
+
+```php
+namespace App\Events;
+
+use App\Models\Order;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class OrderUpdated implements ShouldBroadcast
+{
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
+
+    public function __construct(public Order $order) {}
+
+    public function broadcastOn(): PrivateChannel
+    {
+        return new PrivateChannel("orders.{$this->order->id}");
+    }
+}
+```
+
+Authorize the channel:
+
+```php
+use App\Models\Order;
+use Illuminate\Support\Facades\Broadcast;
+
+Broadcast::channel('orders.{order}', function ($user, Order $order): bool {
+    return $user->id === $order->user_id;
+});
+```
+
+Mark the prop as live. Pass the value as a closure because Inertia executes it on the initial render and each reload:[1][2]
+
+```php
+use App\Events\OrderUpdated;
+use App\Models\Order;
+use Inertia\Inertia;
+
+public function show(Order $order)
+{
+    return Inertia::render('Orders/Show', [
+        'order' => Inertia::live(
+            fn () => $order->fresh(),
+            on: new OrderUpdated($order),
+        ),
+    ]);
+}
+```
+
+Dispatch the event after the update:
+
+```php
+$order->update([
+    'status' => 'shipped',
+]);
+
+broadcast(new OrderUpdated($order))->toOthers();
+```
+
+`toOthers()` relies on Inertia sending the socket ID in the `X-Socket-Id` header.[1][2]
+
+Inertia does not require changes to the page component. It subscribes when the page loads and refreshes the prop after a broadcast:[1][2]
+
+```vue
+<script setup>
+import { useProp } from '@inertiajs/vue3'
+
+defineProps(['order'])
+
+const { loading } = useProp('order')
+</script>
+
+<template>
+  <p>Status: {{ order.status }}</p>
+  <span v-if="loading">Updating...</span>
+</template>
+```
+
+## Good practices
+
+- Use `ShouldBroadcastNow` only when the broadcast must happen during the request.
+- Use API resources rather than models in `broadcastProps()`, because broadcasting a model exposes every attribute not hidden by the model.
+- Keep `toOthers()` when the initiating tab already has the updated value.
+- Use throttling for metrics, counters, and other high-frequency props.
+- Keep queue workers and Reverb running in every environment that uses live props.
+
+## Bad practices
+
+Do not broadcast a complete model without checking its visible attributes:
+
+```php
+// Bad: every non-hidden attribute may be broadcast.
+Inertia::broadcastProps([
+    'order' => $order,
+]);
+```
+
+Do not use a public channel for order, user, or tenant data.
+
+Do not make every prop live. Frequently changing props can create request amplification across many open tabs. Use normal navigation, polling, or manual refresh when real-time updates do not provide meaningful value.[1]
+
+Do not assume that a broadcasted value is safe for every subscriber. Every subscriber to the channel receives the same payload, and channel authorization runs when the user subscribes.[1][2]
+
+```vue
+<script setup>
+import { useProp } from '@inertiajs/vue3'
+
+const {
+  value: order,
+  loading,
+  loaded,
+} = useProp('order')
+</script>
+
+<template>
+  <section :class="{ 'opacity-50': loading }">
+    <p>{{ order.status }}</p>
+    <small v-if="!loaded">Loading order…</small>
+    <small v-else-if="loading">Refreshing…</small>
+  </section>
+</template>
+```
+
 ## `useProp()`
 
 `useProp()` exposes the current value and its refresh state. The loading state includes live reloads and deferred loading.[1][4]
