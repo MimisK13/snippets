@@ -294,6 +294,41 @@ $count = $request->integer(
 
 Do not use a non-null boolean fallback if invalid and false have different meanings.
 
+## UUID and ULID input
+
+Laravel 13.42 adds `uuid()` and `ulid()` to `InteractsWithData`, alongside `date()` and `enum()`. They return typed objects instead of strings:[5][6][7]
+
+```php
+$request->uuid('order_id');
+$request->ulid('order_id');
+
+$request->safe()->uuid('order_id');
+```
+
+Missing or empty input returns `null`. Invalid input throws an exception. The helpers are available on `Request`, `Fluent`, validated input, URI query strings, Blade component attributes, and Artisan command input.[5]
+
+`ulid()` only accepts a real ULID string. A UUID passed to it throws instead of being converted into a different ULID.[5]
+
+```php
+use Illuminate\Support\Uri;
+
+Uri::of($nextPageUrl)
+    ->query()
+    ->uuid('order_id');[4]
+```
+
+## URI origins
+
+Laravel 13.42 adds `Uri::origin()`, which returns the scheme, host, and port in normalized form. This makes same-origin comparisons straightforward:[5][8]
+
+```php
+use Illuminate\Support\Uri;
+
+$sameOrigin = Uri::of($first)->origin() === Uri::of($second)->origin();[4]
+```
+
+For example, `https://App.example.com:443` becomes `https://app.example.com`. The framework now requires `league/uri` 7.6 or later.[5]
+
 ## Version
 
 - The `strict` flag for `string()`, `str()`, `boolean()`, `integer()`, and `float()` was introduced in Laravel Framework `v13.40.0`, PR `#62254`.[2][3]
@@ -305,3 +340,7 @@ Do not use a non-null boolean fallback if invalid and false have different meani
 - [2] [Laravel Framework v13.40.0](https://github.com/laravel/framework/releases/tag/v13.40.0)
 - [3] [Laravel Framework PR #62254](https://github.com/laravel/framework/pull/62254)
 - [4] [Laravel 13.x — `InteractsWithData`](https://github.com/laravel/framework/blob/13.x/src/Illuminate/Support/Traits/InteractsWithData.php)
+- [5] [Laravel News — Laravel 13.42.0](https://laravel-news.com/laravel-13-42-0)
+- [6] [Laravel Framework PR #62327](https://github.com/laravel/framework/pull/62327)
+- [7] [Laravel Framework PR #62348](https://github.com/laravel/framework/pull/62348)
+- [8] [Laravel Framework PR #62326](https://github.com/laravel/framework/pull/62326)

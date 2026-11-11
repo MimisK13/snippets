@@ -94,6 +94,29 @@ When the scheduler is responsible for cleanup, disable request-driven cleanup ex
 
 Run the scheduler on one server when several application instances share the same session store. Verify that the selected session driver implements garbage collection before relying on the command.
 
+## Skip reasons
+
+Laravel 13.42 adds a `reason` property to `ScheduledTaskSkipped`. It holds a `ScheduledTaskSkipReason` enum with `ConditionNotMet`, `Paused`, and `RanOnAnotherServer`:[9][10][11]
+
+```php
+use Illuminate\Console\Events\ScheduledTaskSkipped;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
+
+Event::listen(function (ScheduledTaskSkipped $event): void {
+    Log::info('Scheduled task skipped', [
+        'task' => $event->task->getSummaryForDisplay(),
+        'reason' => $event->reason?->value,
+    ]);
+});
+```
+
+## JSON timezones
+
+Laravel 13.42 changes `schedule:list --json` to return each task's own cron expression and timezone. Previously, every expression was converted to the application timezone, so stored output could be off by an hour after a DST change. Passing `--timezone` still converts every task to that timezone.[9][10][11]
+
+If you parse this JSON, check tasks that set their own `timezone()`, because their `expression`, `timezone`, and `next_due_date` values change.[9]
+
 ## Sources
 
 - [1] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
@@ -104,3 +127,6 @@ Run the scheduler on one server when several application instances share the sam
 - [6] [Laravel Framework v13.39.0](https://github.com/laravel/framework/releases/tag/v13.39.0)
 - [7] [Laravel Framework PR #62104](https://github.com/laravel/framework/pull/62104)
 - [8] [Laravel Framework PR #62150](https://github.com/laravel/framework/pull/62150)
+- [9] [Laravel News — Laravel 13.42.0](https://laravel-news.com/laravel-13-42-0)
+- [10] [Laravel Framework PR #62294](https://github.com/laravel/framework/pull/62294)
+- [11] [Laravel Framework PR #62352](https://github.com/laravel/framework/pull/62352)

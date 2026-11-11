@@ -575,8 +575,39 @@ The sync queue now reports the same duration. Treat `duration` as nullable for c
 - `JobAttempted::$duration` introduced in Laravel Framework `v13.39.0`; sync-queue support followed in PR `#62155`.[27][28][29]
 - If you maintain snippets for older Laravel versions, keep the manual sum as the `Queue::totalSize()` fallback.
 
-## Sources
+## After-response exceptions
 
+Laravel 13.42 fixes `dispatch()->afterResponse()` so exceptions are reported instead of being rendered. This keeps a failed after-response job from producing a user-facing error page while still allowing the exception to reach your logging and monitoring pipeline.[30][31]
+
+```php
+use App\Jobs\GenerateInvoice;
+use App\Models\Order;
+
+$order = Order::factory()->create();
+
+GenerateInvoice::dispatch($order)->afterResponse();
+```
+
+Use after-response dispatch for work that should not delay the HTTP response, but monitor the reported exceptions because the response has already been sent.[1]
+
+## Process macros
+
+Laravel 13.42 makes `PendingProcess` macroable. A macro on the `Process` factory now works in a chain even when it is not the first call:[32][33]
+
+```php
+use Illuminate\Process\PendingProcess;
+use Illuminate\Support\Facades\Process;
+
+PendingProcess::macro('withHerd', function () {
+    return $this->env(['PATH' => $herdBin.':'.getenv('PATH')]);
+});
+
+Process::tty()->withHerd()->run('composer global install');
+```
+
+This is useful when wrapping common process setup in reusable snippets without changing the call order.[1]
+
+## Sources
 - [1] [Laravel Framework v13.31.0](https://github.com/laravel/framework/releases/tag/v13.31.0)
 - [2] [Laravel Framework PR #61373](https://github.com/laravel/framework/pull/61373)
 - [3] [Laravel News — Queue `totalSize()`](https://laravel-news.com/laravel-13-31-0)
@@ -606,3 +637,7 @@ The sync queue now reports the same duration. Treat `duration` as nullable for c
 - [27] [Laravel Framework v13.39.0](https://github.com/laravel/framework/releases/tag/v13.39.0)
 - [28] [Laravel Framework PR #62118](https://github.com/laravel/framework/pull/62118)
 - [29] [Laravel Framework PR #62155](https://github.com/laravel/framework/pull/62155)
+- [30] [Laravel News — Laravel 13.42.0](https://laravel-news.com/laravel-13-42-0)
+- [31] [Laravel Framework PR #62313](https://github.com/laravel/framework/pull/62313)
+- [32] [Laravel News — Laravel 13.42.0](https://laravel-news.com/laravel-13-42-0)
+- [33] [Laravel Framework PR #62351](https://github.com/laravel/framework/pull/62351)

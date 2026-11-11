@@ -107,9 +107,22 @@ $role = $user->roles()->createOrRestore(
 
 The same restore/create behavior is available on has-one, has-many, has-one-through, and has-many-through relationships.[3][4]
 
-## Sources
+## `foreignIdFor()` and integer keys
 
+Laravel 13.42 fixes `foreignIdFor()` so a model with `$keyType = 'integer'` creates a `bigint` column instead of a `char(36)` column. This keeps foreign keys aligned with integer primary keys and avoids an unnecessary UUID-style column.[5][6]
+
+```php
+use App\Models\User;
+
+$table->foreignIdFor(User::class)->constrained();
+```
+
+Use `foreignUuidFor()` when the related model intentionally uses UUID or ULID keys.[5]
+
+## Sources
 - [1] [Laravel Framework v13.39.0](https://github.com/laravel/framework/releases/tag/v13.39.0)
 - [2] [Laravel Framework PR #62136](https://github.com/laravel/framework/pull/62136)
 - [3] [Laravel Framework PR #62146](https://github.com/laravel/framework/pull/62146)
 - [4] [Laravel Framework PR #62204](https://github.com/laravel/framework/pull/62204)
+- [5] [Laravel News — Laravel 13.42.0](https://laravel-news.com/laravel-13-42-0)
+- [6] [Laravel Framework PR #62365](https://github.com/laravel/framework/pull/62365)
