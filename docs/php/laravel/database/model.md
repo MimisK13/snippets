@@ -169,6 +169,37 @@ Activity::create([
 
 Use keyless models for append-only logs, staging tables, database views, or legacy tables that genuinely have no unique key. Operations that need model identity—such as instance updates, deletes, `refresh()`, route-model binding, and some relationships—still require a stable key and should not be assumed to work safely.
 
+## Lazy loading in `cursor()`
+
+Laravel 13.42 makes `cursor()` respect `Model::preventLazyLoading()`. When lazy loading is prevented, a cursor query that lazily accesses a relation will throw instead of silently performing extra queries.[6][7]
+
+```php
+use App\Models\Post;
+
+Post::preventLazyLoading();
+
+Post::cursor()->each(function (Post $post): void {
+    // Accessing $post->author here throws if author was not eager loaded.
+    echo $post->author->name;
+});
+```
+
+Eager load relations before cursor iteration, or use `with()` to make the cursor explicit and predictable.[6]
+
+## Custom lost connection detection
+
+Laravel 13.42 adds `LostConnectionDetector::detectUsing()`, which lets you add a custom check without binding a custom detector. When the callback returns `false`, Laravel falls back to its built-in lost-connection messages.[6][8]
+
+```php
+use Illuminate\Database\LostConnectionDetector;
+
+LostConnectionDetector::detectUsing(function (Throwable $e): bool {
+    return str_contains($e->getMessage(), 'vttablet: rpc error');
+});
+```
+
+This is useful for database proxies, custom drivers, or infrastructure where the error message differs from Laravel's built-in patterns.[6]
+
 ## Sources
 
 - [1] [Laravel News — Laravel 13.35](https://laravel-news.com/laravel-13-35-0)
@@ -176,3 +207,6 @@ Use keyless models for append-only logs, staging tables, database views, or lega
 - [3] [Laravel Framework v13.39.0](https://github.com/laravel/framework/releases/tag/v13.39.0)
 - [4] [Laravel Framework PR #62113](https://github.com/laravel/framework/pull/62113)
 - [5] [Laravel Framework PR #62205](https://github.com/laravel/framework/pull/62205)
+- [6] [Laravel News — Laravel 13.42.0](https://laravel-news.com/laravel-13-42-0)
+- [7] [Laravel Framework PR #62345](https://github.com/laravel/framework/pull/62345)
+- [8] [Laravel Framework PR #62316](https://github.com/laravel/framework/pull/62316)
